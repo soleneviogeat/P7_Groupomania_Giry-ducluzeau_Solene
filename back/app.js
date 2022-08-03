@@ -3,13 +3,13 @@ const express = require('express');
 //const userRoutes = require("./routes/user");
 //const path = require('path');
 
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://Swizz26:McDGvh6y.f_XMzG@p6-piiquante.jl2wy3r.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://Swizz26:Groupomania@cluster0.oec48gp.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));*/
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express();
 
