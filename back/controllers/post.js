@@ -4,8 +4,9 @@ const fs = require('fs');
 //Logique métier pour créer un nouveau post
 
 exports.createPost = (req, res, next) => {
+    console.log('a', req.body)
     
-    const postObject = JSON.parse(req.body.post);
+    const postObject = req.body;
     delete postObject._id;
     delete postObject.userId;
 
@@ -16,12 +17,16 @@ exports.createPost = (req, res, next) => {
         usersDisliked: [],
         usersLiked: [],
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-  
+
+    if (req.file) {
+        post.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    }
+    
     post.save()
     .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
     .catch(error => { 
+        console.log(error);
         res.status(400).json( { error })
     })
 }
@@ -34,7 +39,7 @@ exports.modifyPost = (req, res, next) => {
         ...JSON.parse(req.body.post),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
-  
+    
     delete postObject._userId;
     Post.findOne({_id: req.params.id})
 
@@ -43,12 +48,16 @@ exports.modifyPost = (req, res, next) => {
                 res.status(403).json({ message : 'Unauthorized request'});
             } else {
 
-                //Remplacement de l'image avant modification par la nouvelle image
-                const filename = post.imageUrl.split('/images/')[1];
-                fs.unlinkSync(`images/${filename}`);
+                //Gestion de l'image lors de la modification d'un post
+                if (req.file) {
+                    const filename = post.imageUrl.split('/images/')[1];
+                    if (fs.existsSync(`images/${filename}`)) {
+                        fs.unlinkSync(`images/${filename}`);
+                    } 
+                }
 
                 Post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id})
-                .then(() => res.status(200).json({message : 'Objet modifié!'}))
+                .then( res.status(200).json({message : 'Objet modifié!'}))
                 .catch(error => res.status(401).json({ error }));
             }
         })
@@ -66,14 +75,19 @@ Post.findOne({ _id: req.params.id})
         if (post.userId != req.auth.userId) {
             res.status(403).json({message: 'Unauthorized request'});
         } else {
-            const filename = post.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
+            if (post.imageUrl) {
+                const filename = post.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Post.deleteOne({_id: req.params.id})
+                        .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
+                        .catch(error => res.status(401).json({ error }));
+                });
+            } else {
                 Post.deleteOne({_id: req.params.id})
-                    .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
-                    .catch(error => res.status(401).json({ error }));
-            });
+                .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
+                .catch(error => res.status(401).json({ error }));
+            }
         }
-        console.log(req.params.id);
     })
     .catch( error => {
         res.status(500).json({ error });
@@ -106,37 +120,45 @@ exports.likePost = (req, res, next) => {
     
     Post.findById(postId)
     .then((post) => {
-        
-        if (like === 0) {
         const likeIsInArray = (element) => element === userId;
         const indexLike = post.usersLiked.findIndex(likeIsInArray)
         const indexDislike = post.usersDisliked.findIndex(likeIsInArray)
 
-            if (indexLike === -1) {
-                post.usersDisliked.splice(indexDislike)
-                post.dislikes = post.dislikes + 1
-            }
-            else {
-                post.usersLiked.splice(indexLike)
-                post.likes = post.likes - 1
-            }
-        }
-
         if (like === 1) {
-            post.usersLiked.push(userId)
-            post.likes = post.likes + 1
+            if (indexLike === -1) {
+                post.usersLiked.push(userId)
+                post.likes = post.usersLiked.length
+            } else {
+                res.status(403).json({message: 'Unauthorized request'}) 
+            }
         }
 
         if (like === -1) {
-            post.usersDisliked.push(userId)
-            post.dislikes = post.dislikes + 1
+            if (indexDislike === -1) {
+                post.usersDisliked.push(userId)
+                post.dislikes = post.usersDisliked.length
+            } else {
+                res.status(403).json({message: 'Unauthorized request'}) 
+            }
         }
 
+        if (like === 0) {
+            if (indexLike === -1) {
+                post.usersDisliked.splice(indexDislike, 1)
+                post.dislikes = post.usersDisliked.length
+            }
+            else {
+                post.usersLiked.splice(indexLike, 1)
+                post.likes = post.usersLiked.length
+            }
+        }
+        console.log(post);
+
         post.save()
-        .then((post) => res.status(200).json({ message: "Post likée" }))
+        .then((post) => res.status(200).json({ message: "Post liké / disliké" }))
         .catch((error) => res.status(500).json({ error }));
     })
-
+    
     .catch((error) => {
         res.status(400).json({ error });
     });
