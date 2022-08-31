@@ -22,6 +22,7 @@ export const Loader = styled.div`
 `
 
 export const StyledLink = styled(Link)`
+  
   padding: 10px 15px;
   color: ${({ $theme }) => ($theme === 'light' ? '#8186a0' : '#ffffff')};
   text-decoration: none;
@@ -29,7 +30,7 @@ export const StyledLink = styled(Link)`
   text-align: center;
   ${(props) =>
     props.$isFullLink &&
-    `color: white; 
+    ` color: white; 
     border-radius: 30px; 
     background-color: ${colors.primary};`}
 `

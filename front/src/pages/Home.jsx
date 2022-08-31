@@ -13,7 +13,6 @@ const HomerContainer = styled.div`
   margin: 30px;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
-  padding: 60px 90px;
   display: flex;
   flex-direction: row;
   max-width: 1200px;
@@ -30,9 +29,11 @@ const LeftCol = styled.div`
 `
 
 const StyledTitle = styled.h2`
+  display: flex;
   padding-bottom: 30px;
-  max-width: 280px;
-  line-height: 50px;
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
   color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
 `
 
@@ -48,11 +49,10 @@ function Home() {
       <HomerContainer theme={theme}>
         <LeftCol>
           <StyledTitle theme={theme}>
-            Repérez vos besoins, on s’occupe du reste, avec les meilleurs
-            talents
+            Bienvenue sur le réseau social de communication et d'échange de Groupomania 
           </StyledTitle>
           <StyledLink to="/survey/1" $isFullLink>
-            Faire le test
+            Créer un post
           </StyledLink>
         </LeftCol>
         
