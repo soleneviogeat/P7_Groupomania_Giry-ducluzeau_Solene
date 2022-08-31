@@ -29,6 +29,9 @@ function Header() {
         <StyledLink $theme={theme} to="/">
           Accueil
         </StyledLink>
+        <StyledLink $theme={theme} to="/post">
+          Post
+        </StyledLink>
         
 
 
@@ -41,9 +44,7 @@ function Header() {
 export default Header
 
 
-/*<StyledLink $theme={theme} to="/freelances">
-          Profils
-        </StyledLink>
+/*
         <StyledLink to="/survey/1" $isFullLink>
           Faire le test
         </StyledLink>*/

@@ -51,7 +51,7 @@ function Home() {
           <StyledTitle theme={theme}>
             Bienvenue sur le réseau social de communication et d'échange de Groupomania 
           </StyledTitle>
-          <StyledLink to="/survey/1" $isFullLink>
+          <StyledLink to="/" $isFullLink>
             Créer un post
           </StyledLink>
         </LeftCol>
