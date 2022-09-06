@@ -54,7 +54,7 @@ function Home() {
             Se connecter
           </StyledLink>
           <StyledLink to="/signup" $isFullLink>
-            S'incrire
+            S'inscrire
           </StyledLink>
         </LeftCol>
         

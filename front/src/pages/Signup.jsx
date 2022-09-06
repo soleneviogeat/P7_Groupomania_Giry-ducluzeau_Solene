@@ -2,9 +2,7 @@ import styled from 'styled-components'
 import colors from '../utils/colors'
 import { StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
-//import EmailInput from '../components/EmailInput'
-//import PasswordInput from '../components/PasswordInput'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const SignupWrapper = styled.div`
   display: flex;
@@ -61,21 +59,16 @@ const StyledInput = styled.input`
 function Signup() {
     const { theme } = useTheme()
     const [userSignup, setUserSignup] = useState({
-        user_firstname: "",
         user_lastname: "",
+        user_firstname: "",
         user_email: "",
         user_password: ""
     });
-
-    const [userLogin, setUserLogin] = useState({
-        user_email: "",
-        user_password: ""
-    });
-
-
 
     function submitSignup() {
         const signupBody = JSON.stringify({
+            lastname: userSignup.user_lastname,
+            firstname: userSignup.user_firstname,
             email: userSignup.user_email,
             password: userSignup.user_password
         })
@@ -106,6 +99,36 @@ function Signup() {
             <StyledTitle theme={theme}>
               Bienvenue sur le réseau social de communication et d'échange de Groupomania 
             </StyledTitle>
+            <InputWrapper theme={theme}>
+                    <StyledLabel theme={theme}>Nom de famille</StyledLabel>
+                    <StyledInput
+                        theme={theme}
+                        type="text"
+                        placeholder='nom de famille'
+                        id='lastname'
+                        name='lastname'
+                        value={userSignup.user_lastname}
+                        onChange={(e) => setUserSignup({
+                            ...userSignup,
+                            user_lastname: e.target.value
+                        })}
+                    />
+                </InputWrapper>
+                <InputWrapper theme={theme}>
+                    <StyledLabel theme={theme}>Prénom</StyledLabel>
+                    <StyledInput
+                        theme={theme}
+                        type="text"
+                        placeholder='prénom'
+                        id='firstname'
+                        name='firstname'
+                        value={userSignup.user_firstname}
+                        onChange={(e) => setUserSignup({
+                            ...userSignup,
+                            user_firstname: e.target.value
+                        })}
+                    />
+                </InputWrapper>
                 <InputWrapper theme={theme}>
                     <StyledLabel theme={theme}>Adresse email</StyledLabel>
                     <StyledInput
@@ -136,7 +159,7 @@ function Signup() {
                         })}
                     />
                 </InputWrapper>
-                <button onClick={submitSignup}>S'inscrire</button>
+                <StyledLink onClick={submitSignup} to="/post" $isFullLink>S'inscrire</StyledLink>
           </LeftCol>
         </SignupContainer>
       </SignupWrapper>
