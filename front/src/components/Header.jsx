@@ -32,19 +32,10 @@ function Header() {
         <StyledLink $theme={theme} to="/post">
           Post
         </StyledLink>
-        
-
-
-
+    
       </div>
     </NavContainer>
   )
 }
 
 export default Header
-
-
-/*
-        <StyledLink to="/survey/1" $isFullLink>
-          Faire le test
-        </StyledLink>*/

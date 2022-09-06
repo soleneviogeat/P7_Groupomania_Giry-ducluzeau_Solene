@@ -4,6 +4,8 @@ import { StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
 //import HomeIllustration from '../../assets/home-illustration.svg'
 
+
+// Design de la bannière de la page d'accueil
 const HomeWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -14,7 +16,7 @@ const HomerContainer = styled.div`
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   max-width: 1200px;
 `
 
@@ -37,9 +39,6 @@ const StyledTitle = styled.h2`
   color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
 `
 
-const Illustration = styled.img`
-  flex: 1;
-`
 
 function Home() {
   const { theme } = useTheme()
@@ -51,16 +50,19 @@ function Home() {
           <StyledTitle theme={theme}>
             Bienvenue sur le réseau social de communication et d'échange de Groupomania 
           </StyledTitle>
-          <StyledLink to="/" $isFullLink>
-            Créer un post
+          <StyledLink to="/login" $isFullLink>
+            Se connecter
+          </StyledLink>
+          <StyledLink to="/signup" $isFullLink>
+            S'incrire
           </StyledLink>
         </LeftCol>
         
       </HomerContainer>
-    </HomeWrapper>
+    </HomeWrapper>    
   )
 }
 
 export default Home
 
-/*<Illustration src={HomeIllustration} />*/
+/*<Illustration src={HomeIllustration} /> */

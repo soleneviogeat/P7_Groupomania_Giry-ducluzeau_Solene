@@ -2,6 +2,7 @@ const passwordSchema = require("../models/password");
 
 // Contrôle du format du mot de passe
 module.exports = (req, res, next) => {
+  console.log(req.body.password);
   if (!passwordSchema.validate(req.body.password)) {
     res.writeHead(400,"Le mot de passe doit comprendre 8 caractères dont un chiffre, une majuscule, une miniscule sans espaces",
       {

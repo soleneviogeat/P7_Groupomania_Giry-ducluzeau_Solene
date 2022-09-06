@@ -72,29 +72,15 @@ const Skill = styled.span`
     ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
 `
 
-const Availability = styled.span`
-  &:before {
-    position: absolute;
-    left: 0;
-    top: 4px;
-    height: 10px;
-    width: 10px;
-    border-radius: 5px;
-    background-color: ${({ available }) => (available ? 'green' : 'red')};
-    content: '';
-  }
-  padding-left: 20px;
-  position: relative;
-`
 
 function Post() {
   const { id: queryId } = useParams()
   const [postData, setPostData] = useState({})
   useEffect(() => {
-    fetch(`http://localhost:8000/freelance?id=${queryId}`)
+    fetch(`http://localhost:8000/post?id=${queryId}`)
       .then((response) => response.json())
       .then((jsonResponse) => {
-        setPostData(jsonResponse?.freelanceData)
+        setPostData(jsonResponse?.postData)
       })
   }, [queryId])
 
@@ -105,7 +91,6 @@ function Post() {
     tjm,
     job,
     skills,
-    available,
     id,
   } = postData
 
@@ -128,9 +113,6 @@ function Post() {
                   </Skill>
                 ))}
             </SkillsWrapper>
-            <Availability available={available}>
-              {available ? 'Disponible maintenant' : 'Indisponible'}
-            </Availability>
             <Price>{tjm} € / jour</Price>
           </PostDetails>
         </PostWrapper>
