@@ -33,3 +33,12 @@ export const StyledLink = styled(Link)`
     border-radius: 30px; 
     background-color: ${colors.primary};`}
 `
+
+export const StyledButton = styled.button`
+padding: 10px 15px;
+color: white; 
+border-radius: 30px; 
+background-color: ${colors.primary};
+font-size: 18px;
+text-align: center;
+`

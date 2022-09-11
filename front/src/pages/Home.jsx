@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import colors from '../utils/colors'
 import { StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
+import { StyledTitle } from '../utils/Components'
 //import HomeIllustration from '../../assets/home-illustration.svg'
 
 
@@ -11,7 +12,7 @@ const HomeWrapper = styled.div`
   justify-content: center;
 `
 
-const HomerContainer = styled.div`
+const HomeContainer = styled.div`
   margin: 30px;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
@@ -30,22 +31,13 @@ const LeftCol = styled.div`
   }
 `
 
-const StyledTitle = styled.h2`
-  display: flex;
-  padding-bottom: 30px;
-  width: 100%;
-  text-align: center;
-  font-size: 26px;
-  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
-`
-
 
 function Home() {
   const { theme } = useTheme()
 
   return (
     <HomeWrapper>
-      <HomerContainer theme={theme}>
+      <HomeContainer theme={theme}>
         <LeftCol>
           <StyledTitle theme={theme}>
             Bienvenue sur le réseau social de communication et d'échange de Groupomania 
@@ -58,7 +50,7 @@ function Home() {
           </StyledLink>
         </LeftCol>
         
-      </HomerContainer>
+      </HomeContainer>
     </HomeWrapper>    
   )
 }

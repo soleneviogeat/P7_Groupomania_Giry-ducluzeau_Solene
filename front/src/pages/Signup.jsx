@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import colors from '../utils/colors'
-import { StyledLink } from '../utils/Atoms'
+import { StyledButton, StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
 import { useState } from 'react'
+import userService from '../services/user.service'
+import { useNavigate } from "react-router-dom";
+import { InputWrapper, StyledInput, StyledLabel, StyledTitle } from '../utils/Components'
 
 const SignupWrapper = styled.div`
   display: flex;
@@ -28,34 +31,6 @@ const LeftCol = styled.div`
   }
 `
 
-const StyledTitle = styled.h2`
-  display: flex;
-  padding-bottom: 30px;
-  width: 100%;
-  text-align: center;
-  font-size: 26px;
-  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
-`
-const InputWrapper = styled.div`
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  display: flex;
-  flex-direction: column;
-`
-
-const StyledLabel = styled.label`
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-`
-
-const StyledInput = styled.input`
-  border: none;
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  background-color: transparent;
-  border-bottom: 1px solid
-    ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  margin-top: 5px;
-  margin-bottom: 15px;
-`
-
 function Signup() {
     const { theme } = useTheme()
     const [userSignup, setUserSignup] = useState({
@@ -65,32 +40,20 @@ function Signup() {
         user_password: ""
     });
 
-    function submitSignup() {
-        const signupBody = JSON.stringify({
-            lastname: userSignup.user_lastname,
-            firstname: userSignup.user_firstname,
-            email: userSignup.user_email,
-            password: userSignup.user_password
-        })
-        console.log(signupBody);
-        fetch('http://localhost:3000/api/auth/signup', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: signupBody
-        }).then((response) => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                console.log(response);
-            }
-        }).then((jsonResponse) => {
-            console.log('a', jsonResponse);
-            //alert(jsonResponse.message)
-        }).catch((err)=>alert(err))
-       
-        
-    }
+    const navigate = useNavigate();
 
+    const submitSignup = () => {
+      const user = {
+        lastname: userSignup.user_lastname,
+        firstname: userSignup.user_firstname,
+        email: userSignup.user_email,
+        password: userSignup.user_password
+      };
+      userService.signup(user)
+      .then(()=>navigate('/post'))
+      .catch((err)=>console.log('noooon', err));
+
+  };
 
     return (
       <SignupWrapper>
@@ -159,7 +122,7 @@ function Signup() {
                         })}
                     />
                 </InputWrapper>
-                <StyledLink onClick={submitSignup} to="/post" $isFullLink>S'inscrire</StyledLink>
+                <StyledButton onClick={submitSignup}>S'inscrire</StyledButton>
           </LeftCol>
         </SignupContainer>
       </SignupWrapper>

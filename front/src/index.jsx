@@ -8,12 +8,11 @@ import Signup from './pages/Signup'
 import Results from './pages/Results'
 import Freelances from './pages/Freelances'*/
 import Post from './pages/Post'
-import CreatePost from './pages/CreatePost'
 import Header from './components/Header'
 import Footer from './components/Footer'
 /*import Error from './components/Error'*/
 import GlobalStyle from './utils/GlobalStyle'
-import { ThemeProvider } from './utils/context'
+import { ThemeProvider } from './utils/ColorContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -23,8 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Header />
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/" element={<Post/>}/>
-            <Route path="/" element={<CreatePost/>}/>
+            <Route path="/post" element={<Post/>}/>
             <Route path="/login" element={<Login/>} />
             <Route path="/signup" element={<Signup/>} />
              

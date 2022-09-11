@@ -27,11 +27,15 @@ function Header() {
       </Link>
       <div>
         <StyledLink $theme={theme} to="/">
-          Accueil
+          Connexion
         </StyledLink>
         <StyledLink $theme={theme} to="/post">
-          Post
+          Posts
         </StyledLink>
+        <StyledLink $theme={theme} to="/createPost">
+          Créer un post
+        </StyledLink>
+        
     
       </div>
     </NavContainer>

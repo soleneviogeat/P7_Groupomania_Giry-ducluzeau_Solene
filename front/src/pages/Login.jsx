@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import colors from '../utils/colors'
-import { StyledLink } from '../utils/Atoms'
+import { StyledButton, StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
 import { useState } from 'react'
+import userService from '../services/user.service'
+import { useNavigate } from 'react-router-dom'
+import { InputWrapper, StyledInput, StyledLabel, StyledTitle } from '../utils/Components'
+
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -28,66 +32,20 @@ const LeftCol = styled.div`
   }
 `
 
-const StyledTitle = styled.h2`
-  display: flex;
-  padding-bottom: 30px;
-  width: 100%;
-  text-align: center;
-  font-size: 26px;
-  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
-`
-const InputWrapper = styled.div`
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  display: flex;
-  flex-direction: column;
-`
-
-const StyledLabel = styled.label`
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-`
-
-const StyledInput = styled.input`
-  border: none;
-  color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  background-color: transparent;
-  border-bottom: 1px solid
-    ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  margin-top: 5px;
-  margin-bottom: 15px;
-`
 
 function Login() {
     const { theme } = useTheme()
-
     const [userLogin, setUserLogin] = useState({
         user_email: "",
         user_password: ""
     });
 
+    const navigate = useNavigate();
 
-
-    function submitLogin() {
-        const loginBody = JSON.stringify({
-            email: userLogin.user_email,
-            password: userLogin.user_password
-        })
-        console.log(loginBody);
-        fetch('http://localhost:3000/api/auth/login', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: loginBody
-        }).then((response) => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                console.log(response);
-            }
-        }).then((jsonResponse) => {
-            console.log('a', jsonResponse);
-            //alert(jsonResponse.message)
-        }).catch((err)=>alert(err))
-       
-        
+    function submitLogin() { 
+      userService.login(userLogin.user_email, userLogin.user_password)
+      .then(() => navigate('/post'))
+      .catch(console.error)
     }
 
 
@@ -128,7 +86,7 @@ function Login() {
                         })}
                     />
                 </InputWrapper>
-                <StyledLink onClick={submitLogin} to="/post" $isFullLink>Se connecter</StyledLink>
+                <StyledButton onClick={submitLogin}>Se connecter</StyledButton>
           </LeftCol>
         </LoginContainer>
       </LoginWrapper>

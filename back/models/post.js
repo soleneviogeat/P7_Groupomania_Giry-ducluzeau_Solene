@@ -3,9 +3,10 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const postSchema = mongoose.Schema({
     userId: { type: String, required: true },
-    userName: { type: String, required: true },
     post: { type: String, required: true },
     imageUrl: { type: String },
+    createdAt: { type: Date },
+    updatedAt: { type: Date },
     likes: { type: Number },
     dislikes: { type: Number},
     usersLiked: { type: [ String ] },

@@ -6,7 +6,6 @@ import { ThemeContext } from '../utils/ColorContext'
 import postService from '../services/post.service'
 import userService from '../services/user.service'
 import CreationPost from '../components/CreationPost'
-import Post from '../components/PostComponent'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -77,13 +76,24 @@ const Skill = styled.span`
 `
 
 
-function HomePage() {
+function Post(props) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const createdAtDate = new Date(props.post.createdAt).toLocaleDateString();
+  const createdAtTime = new Date(props.post.createdAt).toLocaleTimeString();
+  let updatedAtDate = new Date(props.post.updateAt).toLocaleDateString();
+  let updatedAtTime = new Date(props.post.updateAt).toLocaleTimeString();
+
+
+  /*if (updatedAtDate == null && updatedAtTime == null) {
+    delete updatedAtDate;
+  }*/
 
   useEffect(() => {
-    postService.getAllPosts().then((res) => {
+    console.log(props);
+    userService.getOneUser(props.post.userId).then((res) => {
+        console.log(new Date(props.post.createdAt).toLocaleTimeString());
       setData(res);
       setError(null);
     }).catch((err) => {
@@ -93,28 +103,37 @@ function HomePage() {
     .finally(() => {
       setLoading(false);
     });
-  }, [])
+  }, []);
 
 
   return (
-    <div className="homepage">
-        {loading && <div>Un moment s'il vous plaît...</div>}
-        {error && (
-          <div>{`Il y a un problème avec la récupération des publications - ${error}`}</div>
+        <ThemeContext.Consumer>
+        {({ theme }) => (
+            <PostWrapper theme={theme}>
+                {loading && <div>A moment please...</div>}
+                {error && (
+                <div>{`There is a problem fetching the post data - ${error}`}</div>
+                )}
+                {data &&
+                        <PostDetails theme={theme}>
+                        <TitleWrapper>
+                        <Title>{props.post.post}</Title>
+                        </TitleWrapper>
+                        <JobTitle>{data.lastname}</JobTitle>
+                        <Price>{data.firstname}</Price>
+                        <Price>{createdAtDate}</Price>
+                        <Price>{createdAtTime}</Price>
+                        <Price>{updatedAtDate}</Price>
+                        <Price>{updatedAtTime}</Price>
+                        updatedAt
+                    </PostDetails>
+                }
+            </PostWrapper>
         )}
-        <CreationPost></CreationPost>
-        <ul>
-          {data &&
-            data.map(({ id, post, userId, createdAt, updatedAt }) => (
-              <li key={id}>
-                <Post post={{post, userId, createdAt, updatedAt}}></Post>
-              </li>
-              
-            ))}
-        </ul>
-    </div>
+        </ThemeContext.Consumer>
+
     
   )
 }
 
-export default HomePage
+export default Post
