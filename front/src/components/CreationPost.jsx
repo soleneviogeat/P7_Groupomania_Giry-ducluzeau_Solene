@@ -15,16 +15,16 @@ function CreationPost() {
   
   function handleSubmit(event) {
     event.preventDefault()
-    const url = 'http://localhost:3000/api/posts/upload';
+    //const url = 'http://localhost:3000/api/posts/upload';
     const formData = new FormData();
     formData.append('image', file);
     //formData.append('fileName', file.name);
     formData.append('post', postCreate.post)
-    const config = {
+    /*const config = {
       headers: {
         'content-type': 'multipart/form-data',
       },
-    };
+    };*/
     postService.createPostFile(formData)
     .then((res)=>console.log('ouiii', res))
     .catch((err)=>console.log('nooon', err));

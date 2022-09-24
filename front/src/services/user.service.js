@@ -42,7 +42,6 @@ class UserService {
                 user: signUpRes,
                 pass: user
             }
-            console.log(signUpRes);
             localStorage.setItem("currentUserId", JSON.stringify(signUpRes.id));
             return object;
         })

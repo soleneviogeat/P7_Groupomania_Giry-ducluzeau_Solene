@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
                 email: req.body.email,
                 password: hash
             });
-            console.log(user)
+        
             user.save((err, user) => {
                 if (err) {
                   res.status(500).send({ message: err });
@@ -72,7 +72,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-
+    
     User.findOne({ email: req.body.email })
     
         .then(user => {

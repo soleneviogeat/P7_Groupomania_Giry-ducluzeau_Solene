@@ -11,16 +11,21 @@ exports.createCom = (req, res, next) => {
 
     const com = new Com({
         ...comObject,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
         likes: 0,
         dislikes: 0,
         usersDisliked: [],
         usersLiked: [],
         userId: req.auth.userId,
-        //imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
+
+    if (req.file) {
+        com.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    }
   
     com.save()
-    .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
+    .then(() => { res.status(201).json({message: 'Commentaire enregistré !'})})
     .catch(error => { 
         res.status(400).json( { error })
     })
@@ -91,6 +96,14 @@ Com.find()
     .then(coms => res.status(200).json(coms))
     .catch(error => res.status(400).json({ error }));
 }
+
+//Logique métier pour récupérer tous les coms d'un post
+
+exports.getAllComsOfOnePost = (req, res, next) => {
+    Com.find({postId: req.params.postId})
+        .then(coms => res.status(200).json(coms))
+        .catch(error => res.status(400).json({ error }));
+    }
 
 /*Logique métier pour récupérer un seul com
 

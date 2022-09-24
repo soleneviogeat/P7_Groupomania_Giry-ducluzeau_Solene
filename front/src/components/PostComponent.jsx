@@ -6,6 +6,8 @@ import { ThemeContext } from '../utils/ColorContext'
 import postService from '../services/post.service'
 import userService from '../services/user.service'
 import CreationPost from '../components/CreationPost'
+import CommentComponent from './CommentComponent.'
+import comService from '../services/com.service'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -13,7 +15,8 @@ const PostWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 90px 0;
-  margin: 0 90px;
+  margin: 2rem 5rem;
+  border-radius: 1rem;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
 `
@@ -21,8 +24,12 @@ const PostWrapper = styled.div`
 const PostDetails = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 50px;
+  
   color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
+  img {
+  
+    max-height: 5rem;
+  }
 `
 
 const Picture = styled.img`
@@ -76,56 +83,105 @@ const Skill = styled.span`
 `
 
 
-function Post(props) {
-  const [data, setData] = useState(null);
+function PostComponent(props) {
+  const [userData, setUserData] = useState(null);
+  const [comData, setComData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const createdAtDate = new Date(props.post.createdAt).toLocaleDateString();
-  const createdAtTime = new Date(props.post.createdAt).toLocaleTimeString();
-  let updatedAtDate = new Date(props.post.updateAt).toLocaleDateString();
-  let updatedAtTime = new Date(props.post.updateAt).toLocaleTimeString();
 
+  //let commentSectionOpened = false;
+  const [isOpened, setIsOpened] = useState(false)
 
-  /*if (updatedAtDate == null && updatedAtTime == null) {
-    delete updatedAtDate;
-  }*/
+  const openCommentSection = () => {
+    setIsOpened(element => !element)
+  }
 
   useEffect(() => {
     console.log(props);
-    userService.getOneUser(props.post.userId).then((res) => {
-        console.log(new Date(props.post.createdAt).toLocaleTimeString());
-      setData(res);
+    userService.getOneUser(props.post.userId)
+    .then((res) => {
+      setUserData(res);
       setError(null);
+    })
+    .catch((err) => {
+      setError(err.message);
+      setUserData(null);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+    comService.getAllComsOfOnePost(props.post._id)
+    .then((res) => {
+      console.log('lzzzzz', res);
+      setComData(res);
+      setError(null)
     }).catch((err) => {
       setError(err.message);
-      setData(null);
+      setUserData(null);
     })
     .finally(() => {
       setLoading(false);
     });
   }, []);
 
+  function createdAtDate(props) {
+    return new Date(props.post.createdAt).toLocaleDateString();
+  }
+  
+  function createdAtTime(props) {
+    return new Date(props.post.createdAt).toLocaleTimeString();
+  } 
+
+  function updatedAtDate(props) {
+    return new Date(props.post.updateAt).toLocaleDateString();
+  } 
+
+  function updatedAtTime(props) {
+    return new Date(props.post.updateAt).toLocaleTimeString();
+  };
+
+
+  if (updatedAtDate == null && updatedAtTime == null) {
+    return createdAtDate();
+  };
+
+
 
   return (
-        <ThemeContext.Consumer>
+        <ThemeContext.Consumer key={props.id}>
         {({ theme }) => (
             <PostWrapper theme={theme}>
-                {loading && <div>A moment please...</div>}
+                {loading && <div>Chargement de la publication...</div>}
                 {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
                 )}
-                {data &&
-                        <PostDetails theme={theme}>
+                {userData && 
+                      <PostDetails theme={theme} >
                         <TitleWrapper>
-                        <Title>{props.post.post}</Title>
+                          <Title>{props.post.post}</Title>
                         </TitleWrapper>
-                        <JobTitle>{data.lastname}</JobTitle>
-                        <Price>{data.firstname}</Price>
-                        <Price>{createdAtDate}</Price>
-                        <Price>{createdAtTime}</Price>
-                        <Price>{updatedAtDate}</Price>
-                        <Price>{updatedAtTime}</Price>
-                        updatedAt
+                        <img src={`${props.post.imageUrl}`} alt="" />
+                        <div>
+                          
+                          <JobTitle>{userData.lastname}</JobTitle>
+                          <Price>{userData.firstname}</Price>
+                          
+
+                        </div>
+                        <button onClick={openCommentSection}>Commenter</button>
+                        <ul>
+                      {comData &&
+                        comData.map(({ com, imageUrl }) => (
+                          <li>
+                            <p>Commentaire : {com}</p>
+                            <img src={imageUrl} alt="" />
+                          </li>
+                          
+                        ))}
+                    </ul>
+                       {isOpened? <CommentComponent comment={props.post._id}></CommentComponent> : null
+                        } 
+                        
                     </PostDetails>
                 }
             </PostWrapper>
@@ -136,4 +192,11 @@ function Post(props) {
   )
 }
 
-export default Post
+export default PostComponent
+
+/**
+ * <Price>{createdAtDate}</Price>
+                        <Price>{createdAtTime}</Price>
+                        <Price>{updatedAtDate}</Price>
+                        <Price>{updatedAtTime}</Price>
+ */

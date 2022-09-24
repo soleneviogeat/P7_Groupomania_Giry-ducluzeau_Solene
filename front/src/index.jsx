@@ -9,7 +9,7 @@ import Results from './pages/Results'
 import Freelances from './pages/Freelances'*/
 import Post from './pages/Post'
 import Header from './components/Header'
-import Footer from './components/Footer'
+
 /*import Error from './components/Error'*/
 import GlobalStyle from './utils/GlobalStyle'
 import { ThemeProvider } from './utils/ColorContext'
@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/signup" element={<Signup/>} />
              
           </Routes>
-          <Footer />
+          
       </ThemeProvider>
     </Router>
   </React.StrictMode>

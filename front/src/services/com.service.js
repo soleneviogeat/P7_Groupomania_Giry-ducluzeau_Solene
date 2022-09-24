@@ -1,18 +1,18 @@
 import httpService from "./http.service";
 import axios from 'axios';
 
-class PostService {
-    postUrl = 'posts'
+class ComService {
+    comUrl = 'coms'
 
-    async getAllPosts() {
-        return httpService.get(this.postUrl);
+    async getAllComsOfOnePost(postId) {
+        return httpService.get(this.comUrl + '/' + postId);
     }
 
-    async createPost(post, file) {
+    async createCom(post, file) {
         
         const userId = JSON.parse(localStorage.getItem('currentUserId'));
         
-        return httpService.post(this.postUrl + '?userId=' + userId, {post, file});
+        return httpService.post(this.comUrl + '?userId=' + userId, {post, file});
     }
 
     async createPostFile(formData) {
@@ -34,4 +34,4 @@ class PostService {
 
 }
 
-export default new PostService()
+export default new ComService()

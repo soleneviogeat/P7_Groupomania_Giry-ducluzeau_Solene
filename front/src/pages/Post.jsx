@@ -7,6 +7,8 @@ import postService from '../services/post.service'
 import userService from '../services/user.service'
 import CreationPost from '../components/CreationPost'
 import Post from '../components/PostComponent'
+import PostComponent from '../components/PostComponent'
+import comService from '../services/com.service'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -83,10 +85,13 @@ function HomePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    postService.getAllPosts().then((res) => {
+    postService.getAllPosts()
+    .then((res) => {
+      console.log('a', res);
       setData(res);
       setError(null);
-    }).catch((err) => {
+    })
+    .catch((err) => {
       setError(err.message);
       setData(null);
     })
@@ -98,16 +103,16 @@ function HomePage() {
 
   return (
     <div className="homepage">
-        {loading && <div>Un moment s'il vous plaît...</div>}
+        {loading && <div>Chargement des publications...</div>}
         {error && (
           <div>{`Il y a un problème avec la récupération des publications - ${error}`}</div>
         )}
         <CreationPost></CreationPost>
         <ul>
           {data &&
-            data.map(({ id, post, userId, createdAt, updatedAt }) => (
-              <li key={id}>
-                <Post post={{post, userId, createdAt, updatedAt}}></Post>
+            data.map(({ _id, post, userId, createdAt, updatedAt, imageUrl }) => (
+              <li>
+                <PostComponent post={{post, userId, createdAt, updatedAt, imageUrl, _id}}></PostComponent>
               </li>
               
             ))}

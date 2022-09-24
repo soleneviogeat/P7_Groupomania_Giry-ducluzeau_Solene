@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { StyledLink } from '../utils/Atoms'
-import LightLogo from '../assets/icon-left-font-monochrome-white.png'
-import DarkLogo from '../assets/icon-left-font.png'
+import LightLogo from '../assets/light-logo.png'
+import DarkLogo from '../assets/dark-logo.png'
 import { useTheme } from '../utils/hooks'
 
 const HomeLogo = styled.img`
@@ -19,6 +19,8 @@ const NavContainer = styled.nav`
 
 function Header() {
   const { theme } = useTheme()
+
+  console.log(window.location.href);
 
   return (
     <NavContainer>

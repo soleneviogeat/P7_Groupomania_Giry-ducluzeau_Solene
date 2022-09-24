@@ -31,6 +31,14 @@ const LeftCol = styled.div`
   }
 `
 
+const StyledFlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex: 1;
+  padding: 2rem;
+`
+
 
 function Home() {
   const { theme } = useTheme()
@@ -42,12 +50,15 @@ function Home() {
           <StyledTitle theme={theme}>
             Bienvenue sur le réseau social de communication et d'échange de Groupomania 
           </StyledTitle>
-          <StyledLink to="/login" $isFullLink>
-            Se connecter
-          </StyledLink>
-          <StyledLink to="/signup" $isFullLink>
-            S'inscrire
-          </StyledLink>
+          <StyledFlexContainer>
+            <StyledLink to="/login" $isFullLink>
+              Se connecter
+            </StyledLink>
+            <StyledLink to="/signup" $isFullLink>
+              S'inscrire
+            </StyledLink>
+          </StyledFlexContainer>
+          
         </LeftCol>
         
       </HomeContainer>

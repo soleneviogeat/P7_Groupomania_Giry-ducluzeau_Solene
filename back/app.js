@@ -10,7 +10,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const Role = require("./models/role");
 
-mongoose.connect('mongodb+srv://Swizz26:Groupomania@cluster0.oec48gp.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://Swizz26:McDGvh6y.f_XMzG@groupomania.ao5aczj.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => {

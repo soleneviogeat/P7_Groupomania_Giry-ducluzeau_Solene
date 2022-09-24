@@ -11,6 +11,7 @@ import { InputWrapper, StyledInput, StyledLabel, StyledTitle } from '../utils/Co
 const LoginWrapper = styled.div`
   display: flex;
   justify-content: center;
+  padding: 1rem;
 `
 
 const LoginContainer = styled.div`
@@ -32,6 +33,13 @@ const LeftCol = styled.div`
   }
 `
 
+const StyledForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
+`
 
 function Login() {
     const { theme } = useTheme()
@@ -53,6 +61,8 @@ function Login() {
       <LoginWrapper>
         <LoginContainer theme={theme}>
           <LeftCol>
+            
+            <StyledForm>
             <StyledTitle theme={theme}>
               Bienvenue sur le réseau social de communication et d'échange de Groupomania 
             </StyledTitle>
@@ -87,6 +97,8 @@ function Login() {
                     />
                 </InputWrapper>
                 <StyledButton onClick={submitLogin}>Se connecter</StyledButton>
+            </StyledForm>
+                
           </LeftCol>
         </LoginContainer>
       </LoginWrapper>
