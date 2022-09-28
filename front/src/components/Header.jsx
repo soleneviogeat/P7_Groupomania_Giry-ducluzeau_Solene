@@ -20,8 +20,6 @@ const NavContainer = styled.nav`
 function Header() {
   const { theme } = useTheme()
 
-  console.log(window.location.href);
-
   return (
     <NavContainer>
       <Link to="/">

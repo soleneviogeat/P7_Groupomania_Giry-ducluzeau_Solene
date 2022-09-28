@@ -9,9 +9,7 @@ class PostService {
     }
 
     async createPost(post, file) {
-        
         const userId = JSON.parse(localStorage.getItem('currentUserId'));
-        
         return httpService.post(this.postUrl + '?userId=' + userId, {post, file});
     }
 
@@ -31,7 +29,36 @@ class PostService {
           });
     }
 
+    async updatePost(formData, postId) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));
+      const url = "http://localhost:3000/api/" + this.postUrl + '/' + postId + '?userId=' + userId;
+      const token = JSON.parse(localStorage.getItem('token'));
+      const config = {
+          headers: {
+              Authorization: `Bearer ${token}`,
+            'content-type': 'multipart/form-data',
+          },
+        };
+        return axios.put(url, formData, config).then((response) => {
+          console.log(response.data);
+        });
+    }
 
+    async deletePost(formData, postId) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));
+      const url = "http://localhost:3000/api/" + this.postUrl + '/' + postId + '?userId=' + userId;
+      const token = JSON.parse(localStorage.getItem('token'));
+      const config = {
+          headers: {
+              Authorization: `Bearer ${token}`,
+            'content-type': 'multipart/form-data',
+          },
+        };
+        return axios.delete(url, formData, config).then((response) => {
+          console.log(response.data);
+          //const filename = response.data.file.filename;
+        });
+    }
 }
 
 export default new PostService()

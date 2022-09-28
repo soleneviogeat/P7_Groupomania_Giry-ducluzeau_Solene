@@ -15,9 +15,9 @@ class ComService {
         return httpService.post(this.comUrl + '?userId=' + userId, {post, file});
     }
 
-    async createPostFile(formData) {
+    async createComFile(formData) {
         const userId = JSON.parse(localStorage.getItem('currentUserId'));
-        const url = "http://localhost:3000/api/posts?userId=" + userId;
+        const url = "http://localhost:3000/api/coms?userId=" + userId;
         const token = JSON.parse(localStorage.getItem('token'));
         const config = {
             headers: {

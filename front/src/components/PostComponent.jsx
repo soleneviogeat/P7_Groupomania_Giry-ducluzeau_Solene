@@ -8,6 +8,7 @@ import userService from '../services/user.service'
 import CreationPost from '../components/CreationPost'
 import CommentComponent from './CommentComponent.'
 import comService from '../services/com.service'
+import { element } from 'prop-types'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -83,7 +84,7 @@ const Skill = styled.span`
 `
 
 
-function PostComponent(props) {
+function PostComponent({post, updatePost, deletePost}) {
   const [userData, setUserData] = useState(null);
   const [comData, setComData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -91,14 +92,29 @@ function PostComponent(props) {
 
   //let commentSectionOpened = false;
   const [isOpened, setIsOpened] = useState(false)
+  const [inModification, setInModification] = useState(false)
+  const [postUpdate, setPostUpdate] = useState({
+    text: post.text,
+});
+
+  const [file, setFile] = useState()
+
+  function handleChange(event) {
+    setFile(event.target.file)
+  }
+
+  const currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
 
   const openCommentSection = () => {
     setIsOpened(element => !element)
   }
 
+  const changeStatusOfPost = () => {
+    setInModification(element => !element)
+  }
+
   useEffect(() => {
-    console.log(props);
-    userService.getOneUser(props.post.userId)
+    userService.getOneUser(post.userId)
     .then((res) => {
       setUserData(res);
       setError(null);
@@ -110,9 +126,8 @@ function PostComponent(props) {
     .finally(() => {
       setLoading(false);
     });
-    comService.getAllComsOfOnePost(props.post._id)
+    comService.getAllComsOfOnePost(post._id)
     .then((res) => {
-      console.log('lzzzzz', res);
       setComData(res);
       setError(null)
     }).catch((err) => {
@@ -124,31 +139,116 @@ function PostComponent(props) {
     });
   }, []);
 
-  function createdAtDate(props) {
-    return new Date(props.post.createdAt).toLocaleDateString();
+  const DisplayDate = props => {
+    const {post} = props;
+    const createdAtDate = new Date(post.createdAt).toLocaleDateString();
+    const createdAtTime = new Date(post.createdAt).toLocaleTimeString();
+    const updatedAtDate = new Date(post.updatedAt).toLocaleDateString();
+    const updatedAtTime = new Date(post.updatedAt).toLocaleTimeString();
+
+    if (createdAtDate === updatedAtDate && createdAtTime === updatedAtTime) {
+      return <div>
+        <Price>{createdAtDate}</Price>
+        <Price>{createdAtTime}</Price>
+      </div>
+    } else {
+      return <div>
+        <Price>{createdAtDate}</Price>
+        <Price>{createdAtTime}</Price>
+        <Price>{updatedAtDate}</Price>
+        <Price>{updatedAtTime}</Price>
+      </div>
+    }
   }
-  
-  function createdAtTime(props) {
-    return new Date(props.post.createdAt).toLocaleTimeString();
-  } 
 
-  function updatedAtDate(props) {
-    return new Date(props.post.updateAt).toLocaleDateString();
-  } 
+  const PostInReadOnly = props => {
+    return <div>
+      <TitleWrapper>
+        <Title>{post.text}</Title>
+      </TitleWrapper>
+      <img src={`${post.imageUrl}`} alt="" />
+      <div>
+        <JobTitle>{userData.lastname}</JobTitle>
+        <Price>{userData.firstname}</Price>
+        <DisplayDate post={post}></DisplayDate>                        
+      </div>
+      {isOpened? 
+      <div>
+        <button onClick={openCommentSection}>Annuler</button>
+        <CommentComponent postId={post._id} ></CommentComponent>
+      </div> :
+      <button onClick={openCommentSection}>Commenter</button>
+      } 
+      {post.userId === currentUserId ?
+      <div>
+        <button onClick={changeStatusOfPost}>Modifier</button>
+        <button>Supprimer</button>
+      </div> : null
+      }                    
+  <ul>
 
-  function updatedAtTime(props) {
-    return new Date(props.post.updateAt).toLocaleTimeString();
-  };
+    {comData &&
+      comData.map(({ com, imageUrl }) => (
+        <li>
+          <p>Commentaire : {com}</p>
+          <img src={imageUrl} alt="" />
+        </li>
+        
+      ))}
+  </ul> 
+  </div>
+  }
 
 
-  if (updatedAtDate == null && updatedAtTime == null) {
-    return createdAtDate();
-  };
+  const PostInModification = props => {
+    //const {post} = props;
+    return <form onSubmit={modifyPost}>
+    <input autoFocus
+        type="text"
+        name="text"
+        id="post"
+        value= {postUpdate.text}
+        onChange={(e) => setPostUpdate({
+            ...postUpdate,
+            text: e.target.value
+        })}/>
+    <input type="file" name='image' onChange={handleChange}/>
+    <button type="submit">Modifier</button>
+    <button onClick={changeStatusOfPost}>Annuler</button> 
+    </form>
+  }
 
+  function modifyPost(event) {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('text', postUpdate.text)
+
+    postService.updatePost(formData, post._id)
+    .then((res)=>console.log('nice', res))
+    .catch((err)=>console.log('boooo', err));
+  }
+
+  const PostInDelete = props => {
+      return <div onSubmit={postDelete}>
+      <p>Êtes-vous sûr de vouloir supprimer ce post ?</p>
+      <button type="submit">Supprimer</button>
+      <button onClick={changeStatusOfPost}>Annuler</button> 
+    </div>
+  }
+  function postDelete(event) {
+    const formData = new FormData();
+    delete postUpdate.text,
+    localStorage.clear();
+
+    postService.deletePost(formData, post._id)
+    .then((res)=>console.log('good', res))
+    .catch((err)=>console.log('bad', err));
+  }
+ 
 
 
   return (
-        <ThemeContext.Consumer key={props.id}>
+        <ThemeContext.Consumer key={post._id}>
         {({ theme }) => (
             <PostWrapper theme={theme}>
                 {loading && <div>Chargement de la publication...</div>}
@@ -156,33 +256,13 @@ function PostComponent(props) {
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
                 )}
                 {userData && 
-                      <PostDetails theme={theme} >
-                        <TitleWrapper>
-                          <Title>{props.post.post}</Title>
-                        </TitleWrapper>
-                        <img src={`${props.post.imageUrl}`} alt="" />
-                        <div>
-                          
-                          <JobTitle>{userData.lastname}</JobTitle>
-                          <Price>{userData.firstname}</Price>
-                          
-
-                        </div>
-                        <button onClick={openCommentSection}>Commenter</button>
-                        <ul>
-                      {comData &&
-                        comData.map(({ com, imageUrl }) => (
-                          <li>
-                            <p>Commentaire : {com}</p>
-                            <img src={imageUrl} alt="" />
-                          </li>
-                          
-                        ))}
-                    </ul>
-                       {isOpened? <CommentComponent comment={props.post._id}></CommentComponent> : null
-                        } 
-                        
-                    </PostDetails>
+                <PostDetails theme={theme} >
+                  { inModification ? 
+                      <PostInModification post={post}></PostInModification> :
+                      <PostInReadOnly></PostInReadOnly>
+                  } 
+                  < PostInDelete post={post}></PostInDelete>
+                </PostDetails>
                 }
             </PostWrapper>
         )}
@@ -194,9 +274,3 @@ function PostComponent(props) {
 
 export default PostComponent
 
-/**
- * <Price>{createdAtDate}</Price>
-                        <Price>{createdAtTime}</Price>
-                        <Price>{updatedAtDate}</Price>
-                        <Price>{updatedAtTime}</Price>
- */

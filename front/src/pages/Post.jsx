@@ -1,14 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
 import colors from '../utils/colors'
 import { ThemeContext } from '../utils/ColorContext'
 import postService from '../services/post.service'
-import userService from '../services/user.service'
 import CreationPost from '../components/CreationPost'
-import Post from '../components/PostComponent'
 import PostComponent from '../components/PostComponent'
-import comService from '../services/com.service'
+import CommentComponent from '../components/CommentComponent.'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -83,11 +80,16 @@ function HomePage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [post, updatePost] = useState([]);
+
+  const createPost = (childData) => {
+    //window.location.reload(false);
+  }
+   
 
   useEffect(() => {
     postService.getAllPosts()
     .then((res) => {
-      console.log('a', res);
       setData(res);
       setError(null);
     })
@@ -107,13 +109,15 @@ function HomePage() {
         {error && (
           <div>{`Il y a un problème avec la récupération des publications - ${error}`}</div>
         )}
-        <CreationPost></CreationPost>
+        <CreationPost createPost={createPost}></CreationPost>
+        
         <ul>
           {data &&
-            data.map(({ _id, post, userId, createdAt, updatedAt, imageUrl }) => (
+            data.map(({ _id, text, userId, createdAt, updatedAt, imageUrl }) => (
               <li>
-                <PostComponent post={{post, userId, createdAt, updatedAt, imageUrl, _id}}></PostComponent>
+                <PostComponent post={{text, userId, createdAt, updatedAt, imageUrl, _id}} updatePost={updatePost} ></PostComponent>
               </li>
+
               
             ))}
         </ul>

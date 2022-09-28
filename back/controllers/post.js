@@ -3,9 +3,7 @@ const fs = require('fs');
 
 //Logique métier pour créer un nouveau post
 
-exports.createPost = (req, res, next) => {
-    console.log('a', req.body)
-    
+exports.createPost = (req, res, next) => {    
     const postObject = req.body;
     delete postObject._id;
     delete postObject.userId;
@@ -28,7 +26,6 @@ exports.createPost = (req, res, next) => {
     post.save()
     .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
     .catch(error => { 
-        console.log(error);
         res.status(400).json( { error })
     })
 }
@@ -38,7 +35,7 @@ exports.createPost = (req, res, next) => {
 exports.modifyPost = (req, res, next) => {
     
     const postObject = req.file ? {
-        ...JSON.parse(req.body.post),
+        /*...JSON.parse(req.body.text),*/
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
     
@@ -104,6 +101,7 @@ Post.findOne({ _id: req.params.id})
 
 exports.getAllPosts = (req, res, next) => {
 Post.find()
+    .sort('-_id')
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(400).json({ error }));
 }
@@ -158,8 +156,6 @@ exports.likePost = (req, res, next) => {
                 post.likes = post.usersLiked.length
             }
         }
-        console.log(post);
-
         post.save()
         .then((post) => res.status(200).json({ message: "Post liké / disliké" }))
         .catch((error) => res.status(500).json({ error }));

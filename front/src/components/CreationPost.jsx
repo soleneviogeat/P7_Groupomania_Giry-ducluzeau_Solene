@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import postService from '../services/post.service';
 
-function CreationPost() {
+function CreationPost({createPost}) {
 
   const [file, setFile] = useState()
   const [postCreate, setPostCreate] = useState({
@@ -14,20 +14,16 @@ function CreationPost() {
   }
   
   function handleSubmit(event) {
-    event.preventDefault()
-    //const url = 'http://localhost:3000/api/posts/upload';
     const formData = new FormData();
     formData.append('image', file);
-    //formData.append('fileName', file.name);
-    formData.append('post', postCreate.post)
-    /*const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };*/
+    formData.append('text', postCreate.text)
+
     postService.createPostFile(formData)
     .then((res)=>console.log('ouiii', res))
     .catch((err)=>console.log('nooon', err));
+
+    createPost(true);
+
     /*
    axios.post(url, formData, config).then((response) => {
       //console.log(response.data);
@@ -38,7 +34,6 @@ function CreationPost() {
 
     });
     */
-
   }
 
   return (
@@ -47,16 +42,16 @@ function CreationPost() {
           <h1>Créer un post</h1>
             <input
             type="text"
-            name="post"
+            name="text"
             id="post"
             placeholder='écrire un post'
-            value={postCreate.post}
+            value={postCreate.text}
             onChange={(e) => setPostCreate({
                 ...postCreate,
-                post: e.target.value
+                text: e.target.value
             })}/>
           <input type="file" name='image' onChange={handleChange}/>
-          <button type="submit">Upload</button>
+          <button type="submit">Créer</button>
         </form>
     </div>
   );

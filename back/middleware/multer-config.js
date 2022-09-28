@@ -9,9 +9,7 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    console.log(req);
     if (!fs.existsSync('./images')) {
-      console.log('lz');
       fs.mkdirSync('images')
     }
     callback(null, 'images');
@@ -20,7 +18,6 @@ const storage = multer.diskStorage({
     const name = file.originalname.split(' ').join('_');
     const extension = MIME_TYPES[file.mimetype];
     const temp = name.split(".")[0];
-    console.log('path', file.path);
     callback(null, temp + '_' + Date.now() + '.' + extension);
   }
 });

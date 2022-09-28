@@ -82,7 +82,6 @@ Com.findOne({ _id: req.params.id})
                     .catch(error => res.status(401).json({ error }));
             });
         }
-        console.log(req.params.id);
     })
     .catch( error => {
         res.status(500).json({ error });
