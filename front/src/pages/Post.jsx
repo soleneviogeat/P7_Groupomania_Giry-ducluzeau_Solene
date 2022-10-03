@@ -5,7 +5,7 @@ import { ThemeContext } from '../utils/ColorContext'
 import postService from '../services/post.service'
 import CreationPost from '../components/CreationPost'
 import PostComponent from '../components/PostComponent'
-import CommentComponent from '../components/CommentComponent.'
+import CommentComponent from '../components/CreationComment'
 
 const PostWrapper = styled.div`
   display: flex;
@@ -81,9 +81,16 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [post, updatePost] = useState([]);
+  const [com, updateCom] = useState([]);
 
-  const createPost = (childData) => {
-    //window.location.reload(false);
+  const createPost = (childData) => {}
+  const deletePost = (childData) => {
+    window.location.reload();
+  }
+
+  const createCom = (childData) => {}
+  const deleteCom = (childData) => {
+    window.location.reload();
   }
    
 
@@ -115,7 +122,11 @@ function HomePage() {
           {data &&
             data.map(({ _id, text, userId, createdAt, updatedAt, imageUrl }) => (
               <li>
-                <PostComponent post={{text, userId, createdAt, updatedAt, imageUrl, _id}} updatePost={updatePost} ></PostComponent>
+                <PostComponent
+                  post={{text, userId, createdAt, updatedAt, imageUrl, _id}}
+                  updatePost={updatePost}
+                  deletePost={deletePost}>
+                </PostComponent>
               </li>
 
               

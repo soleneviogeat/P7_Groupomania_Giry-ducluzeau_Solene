@@ -1,4 +1,4 @@
-const Com = require("../models/com");
+const Com = require('../models/com');
 const fs = require('fs');
 
 //Logique métier pour créer un nouveau com
@@ -25,7 +25,8 @@ exports.createCom = (req, res, next) => {
     }
   
     com.save()
-    .then(() => { res.status(201).json({message: 'Commentaire enregistré !'})})
+    .then(() => { console.log(comObject);
+        res.status(201).json({message: 'Commentaire enregistré !'})})
     .catch(error => { 
         res.status(400).json( { error })
     })
@@ -34,12 +35,12 @@ exports.createCom = (req, res, next) => {
 //Logique métier pour modifier un com
 
 exports.modifyCom = (req, res, next) => {
-    
+    console.log(req.body);
     const comObject = req.file ? {
-        ...JSON.parse(req.body.com),
+        //...JSON.parse(req.body.text),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
-  
+
     delete comObject._userId;
     Com.findOne({_id: req.params.id})
 
@@ -75,12 +76,18 @@ Com.findOne({ _id: req.params.id})
         if (com.userId != req.auth.userId) {
             res.status(403).json({message: 'Unauthorized request'});
         } else {
+            if(com.imageUrl) {
             const filename = com.imageUrl.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 Com.deleteOne({_id: req.params.id})
                     .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
                     .catch(error => res.status(401).json({ error }));
             });
+            } else {
+                Com.deleteOne({_id: req.params.id})
+                    .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
+                    .catch(error => res.status(401).json({ error }));
+            }
         }
     })
     .catch( error => {
@@ -92,6 +99,7 @@ Com.findOne({ _id: req.params.id})
 
 exports.getAllComs = (req, res, next) => {
 Com.find()
+    .sort('_id')
     .then(coms => res.status(200).json(coms))
     .catch(error => res.status(400).json({ error }));
 }
@@ -99,19 +107,19 @@ Com.find()
 //Logique métier pour récupérer tous les coms d'un post
 
 exports.getAllComsOfOnePost = (req, res, next) => {
-    Com.find({postId: req.params.postId})
-        .then(coms => res.status(200).json(coms))
-        .catch(error => res.status(400).json({ error }));
-    }
+Com.find({postId: req.params.postId})
+    .then(coms => res.status(200).json(coms))
+    .catch(error => res.status(400).json({ error }));
+}
 
-/*Logique métier pour récupérer un seul com
+//Logique métier pour récupérer un seul com
 
 exports.getOneCom = (req, res, next) => {
 Com.findOne({ _id: req.params.id })
     .then(com => res.status(200).json(com))
     .catch(error => res.status(404).json({ error }));
 }
-*/
+
 
 //Logique métier pour la gestion des likes et dislikes
 

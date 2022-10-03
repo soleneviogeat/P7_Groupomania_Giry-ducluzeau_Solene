@@ -24,7 +24,8 @@ exports.createPost = (req, res, next) => {
     }
     
     post.save()
-    .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
+    .then(() => { console.log(postObject);
+        res.status(201).json({message: 'Objet enregistré !'})})
     .catch(error => { 
         res.status(400).json( { error })
     })

@@ -9,9 +9,7 @@ class ComService {
     }
 
     async createCom(post, file) {
-        
         const userId = JSON.parse(localStorage.getItem('currentUserId'));
-        
         return httpService.post(this.comUrl + '?userId=' + userId, {post, file});
     }
 
@@ -31,7 +29,26 @@ class ComService {
           });
     }
 
+    async updateCom(formData, comId) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));
+      const url = "http://localhost:3000/api/" + this.comUrl + '/' + comId + '?userId=' + userId;
+      const token = JSON.parse(localStorage.getItem('token'));
+      const config = {
+          headers: {
+              Authorization: `Bearer ${token}`,
+            'content-type': 'multipart/form-data',
+          },
+        };
+        return axios.put(url, formData, config).then((response) => {
+          console.log(response.data);
+        });
+    }
 
+
+    async deleteCom(comId) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));      
+      return httpService.delete(this.comUrl + '/' + comId + '?userId=' + userId);
+    }
 }
 
 export default new ComService()

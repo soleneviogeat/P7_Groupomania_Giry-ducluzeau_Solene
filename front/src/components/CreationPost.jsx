@@ -23,17 +23,6 @@ function CreationPost({createPost}) {
     .catch((err)=>console.log('nooon', err));
 
     createPost(true);
-
-    /*
-   axios.post(url, formData, config).then((response) => {
-      //console.log(response.data);
-      //const filename = response.data.file.filename;
-      postService.createPost(formData, config).then((res)=> {
-        console.log('post créé', res);
-      }).catch((err)=>console.log('nop', err))
-
-    });
-    */
   }
 
   return (

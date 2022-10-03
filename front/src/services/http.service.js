@@ -81,21 +81,19 @@ class HttpService {
     }
 
     async delete(route) {
-        const token = JSON.parse(localStorage.getItem("token"));
-        return fetch(this.apiUrl + route, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-        }).catch((err) => this.handleError(err));
+        const token = JSON.parse(localStorage.getItem("token"))
+            return fetch(this.apiUrl + route, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            }).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).catch((err) => this.handleError(err));
     }
-
-
 }
 
 export default new HttpService()

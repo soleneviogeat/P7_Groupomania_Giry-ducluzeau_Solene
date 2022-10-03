@@ -44,21 +44,11 @@ class PostService {
         });
     }
 
-    async deletePost(formData, postId) {
-      const userId = JSON.parse(localStorage.getItem('currentUserId'));
-      const url = "http://localhost:3000/api/" + this.postUrl + '/' + postId + '?userId=' + userId;
-      const token = JSON.parse(localStorage.getItem('token'));
-      const config = {
-          headers: {
-              Authorization: `Bearer ${token}`,
-            'content-type': 'multipart/form-data',
-          },
-        };
-        return axios.delete(url, formData, config).then((response) => {
-          console.log(response.data);
-          //const filename = response.data.file.filename;
-        });
+    async deletePost(postId) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));      
+      return httpService.delete(this.postUrl + '/' + postId + '?userId=' + userId);
     }
+
 }
 
 export default new PostService()

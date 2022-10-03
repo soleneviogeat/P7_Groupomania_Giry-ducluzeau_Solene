@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import colors from '../utils/colors'
 import { ThemeContext } from '../utils/ColorContext'
 import postService from '../services/post.service'
 import userService from '../services/user.service'
-import CreationPost from '../components/CreationPost'
 import CreationComment from './CreationComment'
 import comService from '../services/com.service'
-import CommentComponent from './CommentComponent'
 
 
 const PostWrapper = styled.div`
@@ -82,17 +80,16 @@ const Skill = styled.span`
 `
 
 
-function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}) {
+function CommentComponent({ com, updateCom, deleteCom }) {
   const [userData, setUserData] = useState(null);
   const [comData, setComData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [isOpened, setIsOpened] = useState(false)
   const [inModification, setInModification] = useState(false)
   const [inDelete, setInDelete] = useState(true)
-  const [postUpdate, setPostUpdate] = useState({
-    text: post.text,
+  const [comUpdate, setComUpdate] = useState({
+    text: com.text,
   });
 
   const [file, setFile] = useState()
@@ -105,36 +102,20 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   const currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
 
-  const openCommentSection = () => {
-    setIsOpened(element => !element)
-  }
-
-  const changeStatusOfPost = () => {
+  const changeStatusOfCom = () => {
     setInModification(element => !element)
   }
 
-  /*const changeStatusOfCom = () => {
-    setInModification(element => !element)
-  }*/
-
-  const removePost = () => {
-    const alertDelete = window.confirm("Voulez-vous supprimer définitivement ce post ?");
-    if (alertDelete) {
-      postDelete();
-      deletePost(true);
-     }
-  }
-
-  /*const removeCom = () => {
+  const removeCom = () => {
     const alertDeleteCom = window.confirm("Voulez-vous supprimer définitivement ce commentaire ?");
     if (alertDeleteCom) {
       comDelete();
       deleteCom(true);
      }
-  }*/
+  }
 
   useEffect(() => {
-    userService.getOneUser(post.userId)
+    userService.getOneUser(com.userId)
     .then((res) => {
       setUserData(res);
       setError(null);
@@ -146,10 +127,9 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     .finally(() => {
       setLoading(false);
     });
-    
-    comService.getAllComsOfOnePost(post._id)
+
+    comService.getAllComsOfOnePost(com._id)
     .then((res) => {
-      console.log(res);
       setComData(res);
       setError(null)
     }).catch((err) => {
@@ -162,29 +142,8 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   }, []);
 
-  const DisplayDatePost = props => {
-    const {post} = props;
-    const createdAtDatePost = new Date(post.createdAt).toLocaleDateString();
-    const createdAtTimePost = new Date(post.createdAt).toLocaleTimeString();
-    const updatedAtDatePost = new Date(post.updatedAt).toLocaleDateString();
-    const updatedAtTimePost = new Date(post.updatedAt).toLocaleTimeString();
 
-    if (createdAtDatePost === updatedAtDatePost && createdAtTimePost === updatedAtTimePost) {
-      return <div>
-        <Price>{createdAtDatePost}</Price>
-        <Price>{createdAtTimePost}</Price>
-      </div>
-    } else {
-      return <div>
-        <Price>{createdAtDatePost}</Price>
-        <Price>{createdAtTimePost}</Price>
-        <Price>{updatedAtDatePost}</Price>
-        <Price>{updatedAtTimePost}</Price>
-      </div>
-    }
-  }
-
-  /*const DisplayDateCom = props => {
+  const DisplayDateCom = props => {
     const {com} = props;
     const createdAtDateCom = new Date(com.createdAt).toLocaleDateString();
     const createdAtTimeCom = new Date(com.createdAt).toLocaleTimeString();
@@ -204,94 +163,62 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
         <Price>{updatedAtTimeCom}</Price>
       </div>
     }
-  }*/
+  }
 
-  const PostInReadOnly = props => {
+  const ComInReadOnly = props => {
     return <div>
       <div>
         <JobTitle>{userData.lastname}</JobTitle>
         <Price>{userData.firstname}</Price>
-        <DisplayDatePost post={post}></DisplayDatePost> 
+        <DisplayDateCom com={com}></DisplayDateCom> 
         <TitleWrapper>
-          <Title>{post.text}</Title>
+          <Title>{com.text}</Title>
         </TitleWrapper>
-        <img src={`${post.imageUrl}`} alt="" />
-      </div>         
-      
-      {isOpened? 
+        <img src={`${com.imageUrl}`} alt="" />
+      </div> 
+
+     
+
+      {com.userId === currentUserId ?
       <div>
-        <button onClick={openCommentSection}>Annuler</button>
-        <CreationComment postId={post._id} ></CreationComment>
-      </div> :
-      <button onClick={openCommentSection}>Commenter</button>
-      } 
-      {post.userId === currentUserId ?
-      <div>
-        <button onClick={changeStatusOfPost}>Modifier</button>
-        <button onClick={removePost}>Supprimer</button>
+        <button onClick={changeStatusOfCom}>Modifier</button>
+        <button onClick={removeCom}>Supprimer</button>
       </div> : null
-      }                    
-    <ul>
-      {comData &&
-        comData.map(({ _id, text, userId, createdAt, updatedAt, imageUrl }) => (
-          <li>
-          <CommentComponent
-            com={{text, userId, createdAt, updatedAt, imageUrl, _id}}
-            updateCom={updatePost}
-            deleteCom={deletePost}>
-          </CommentComponent>
-        </li>
-        ))}                                                  
-    </ul> 
+      }                     
   </div>
   }
 
 
-  const PostInModification = props => {
-    return <form onSubmit={modifyPost}>
+  const ComInModification = props => {
+    return <form onSubmit={modifyCom}>
     <input autoFocus
         type="text"
         name="text"
-        id="post"
-        value= {postUpdate.text}
-        onChange={(e) => setPostUpdate({
-            ...postUpdate,
+        id="com"
+        value= {comUpdate.text}
+        onChange={(e) => setComUpdate({
+            ...comUpdate,
             text: e.target.value
         })}/>
-    <input type="file" name='image' onChange={handleChange}/>
+    <input type="file" name='image' title={comUpdate.imageUrl} onChange={handleChange}/>
     <button type="submit">Modifier</button>
-    <button onClick={changeStatusOfPost}>Annuler</button> 
+    <button onClick={changeStatusOfCom}>Annuler</button> 
     </form>
   }
 
-  function modifyPost(event) {
+  function modifyCom(event) {
     event.preventDefault()
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('text', postUpdate.text)
-console.log(post.imageUrl);
-    postService.updatePost(formData, post._id)
+    formData.append('text', comUpdate.text)
+    
+    comService.updateCom(formData, com._id)
     .then((res)=>console.log('nice', res))
     .catch((err)=>console.log('boooo', err));
   }
 
-  const PostInDelete = props => {
-      return <form onSubmit={postDelete}> 
-        <button type="submit">Supprimer</button>
-        <button onClick={() => removePost(post._id)}>Annuler</button> 
-    </form>
-  }
-  function postDelete(event) {
-    
-    postService.deletePost(post._id)
-    .then((res)=>console.log('good', res))
-    .catch((err)=>console.log('bad', err));
-  }
-
-
-  /*const ComInDelete = props => {
+  const ComInDelete = props => {
     return <form onSubmit={comDelete}> 
-      
       <button type="submit">Supprimer</button>
       <button onClick={() => removeCom(com._id)}>Annuler</button> 
   </form>
@@ -301,25 +228,28 @@ console.log(post.imageUrl);
     comService.deleteCom(com._id)
     .then((res)=>console.log('good', res))
     .catch((err)=>console.log('bad', err));
-  }*/
+  }
  
 
   return (
-        <ThemeContext.Consumer key={post._id}>
+        <ThemeContext.Consumer >
         {({ theme }) => (
             <PostWrapper theme={theme}>
-                {loading && <div>Chargement de la publication...</div>}
+                {loading && <div>Chargement du commentaire...</div>}
                 {error && (
-                <div>{`There is a problem fetching the post data - ${error}`}</div>
+                <div>{`There is a problem fetching the com data - ${error}`}</div>
                 )}
-                {userData && 
+                 {userData && comData &&
                 <PostDetails theme={theme} >
+                   
                   { inModification ? 
-                      <PostInModification post={post} ></PostInModification> :
-                      <PostInReadOnly></PostInReadOnly>
+                      <ComInModification com={com} ></ComInModification> :
+                      <ComInReadOnly></ComInReadOnly>
                   }  
                 </PostDetails>
-                }
+                }              
+                          
+                  
             </PostWrapper>
         )}
         </ThemeContext.Consumer>
@@ -328,10 +258,27 @@ console.log(post.imageUrl);
   )
 }
 
-export default PostComponent
+export default CommentComponent
 
-/**{ inDelete ? 
-                      < PostInDelete post={post}></PostInDelete> :
-                      null
-                  } */
+/**
+ * { inModification ? 
+                      <ComInModification com={com} ></ComInModification> :
+                      <ComInReadOnly></ComInReadOnly>
+                  } 
+ */
+
+/**
+ * com={{text, userId, createdAt, updatedAt, imageUrl, _id}}
+                            updateCom={updateCom}
+                            deleteCom={deleteCom}
+ */
+
+/**
+ *       {post.userId === currentUserId ?
+      <div>
+        <button onClick={changeStatusOfPost}>Modifier</button>
+        <button onClick={removePost}>Supprimer</button>
+      </div> : null
+      } 
+ */
 
