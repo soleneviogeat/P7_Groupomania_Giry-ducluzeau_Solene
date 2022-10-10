@@ -31,7 +31,11 @@ export const StyledLink = styled(Link)`
     props.$isFullLink &&
     ` color: white; 
     border-radius: 30px; 
-    background-color: ${colors.primary};`}
+    background-color: ${colors.primary};
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+`}
+
+
 `
 
 export const StyledButton = styled.button`
@@ -41,4 +45,5 @@ border-radius: 30px;
 background-color: ${colors.primary};
 font-size: 18px;
 text-align: center;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `

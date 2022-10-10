@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import postService from '../services/post.service';
+import postService from '../../services/post.service';
 
 function CreationPost({createPost}) {
 

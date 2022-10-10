@@ -42,6 +42,7 @@ class HttpService {
     }
 
     async post(route, body) {
+        console.log('hey', body);
         const token = JSON.parse(localStorage.getItem("token"));
         return fetch(this.apiUrl + route, {
             method: "POST",
@@ -94,6 +95,8 @@ class HttpService {
                 }
             }).catch((err) => this.handleError(err));
     }
+
+    
 }
 
 export default new HttpService()

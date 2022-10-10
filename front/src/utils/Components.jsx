@@ -36,7 +36,6 @@ export const StyledTitle = styled.h2`
 export const InputWrapper = styled.div`
   color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
   display: flex;
-  flex-direction: column;
 `
 
 export const StyledLabel = styled.label`

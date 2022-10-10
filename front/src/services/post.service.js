@@ -49,6 +49,12 @@ class PostService {
       return httpService.delete(this.postUrl + '/' + postId + '?userId=' + userId);
     }
 
+
+    async likePost(postId, like) {
+      const userId = JSON.parse(localStorage.getItem('currentUserId'));
+      return httpService.post(this.postUrl + '/' + postId + '/like', {userId, like});
+    }
+
 }
 
 export default new PostService()

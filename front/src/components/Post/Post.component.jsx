@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import colors from '../utils/colors'
-import { ThemeContext } from '../utils/ColorContext'
-import postService from '../services/post.service'
-import userService from '../services/user.service'
-import CreationPost from '../components/CreationPost'
-import CreationComment from './CreationComment'
-import comService from '../services/com.service'
-import CommentComponent from './CommentComponent'
+import colors from '../../utils/colors'
+import { ThemeContext } from '../../utils/ColorContext'
+import postService from '../../services/post.service'
+import userService from '../../services/user.service'
+import CreationPost from './CreationPost.component'
+import CreationComment from '../Comment/CreationComment.component'
+import comService from '../../services/commment.service'
+import CommentComponent from '../Comment/Comment.component'
+import LikeOrDislikePost from '../LikeOrDislike.component'
 
 
 const PostWrapper = styled.div`
@@ -15,9 +16,10 @@ const PostWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 90px 0;
-  margin: 2rem 5rem;
+  padding: 0;
+  margin: 2rem 0;
   border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
 `
@@ -25,16 +27,14 @@ const PostWrapper = styled.div`
 const PostDetails = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  img {
-    max-height: 5rem;
-  }
 `
 
 const Picture = styled.img`
-  height: 150px;
-  width: 150px;
-  border-radius: 75px;
+  max-height: 400px;
+  border-radius: 0 15px 15px 0;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `
 
 const Title = styled.h1`
@@ -43,42 +43,12 @@ const Title = styled.h1`
   font-weight: 500;
 `
 
-const JobTitle = styled.h2`
-  padding-top: 10px;
-  font-size: 20px;
-  margin: 0;
-  font-weight: 500;
-`
-
-const Location = styled.span`
-  margin-left: 15px;
-  color: ${colors.secondary};
-`
 
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
-
-const Price = styled.span`
-  padding-top: 10px;
-  font-weight: 500;
-  font-size: 20px;
-`
-
-const SkillsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 10px 0;
-`
-
-const Skill = styled.span`
-  border-radius: 5px;
-  padding: 5px;
-  margin-right: 5px;
-  border: 1px solid
-    ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
+  padding: 1em;
 `
 
 
@@ -90,7 +60,6 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   const [isOpened, setIsOpened] = useState(false)
   const [inModification, setInModification] = useState(false)
-  const [inDelete, setInDelete] = useState(true)
   const [postUpdate, setPostUpdate] = useState({
     text: post.text,
   });
@@ -104,18 +73,8 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
   }
 
   const currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
-
-  const openCommentSection = () => {
-    setIsOpened(element => !element)
-  }
-
-  const changeStatusOfPost = () => {
-    setInModification(element => !element)
-  }
-
-  /*const changeStatusOfCom = () => {
-    setInModification(element => !element)
-  }*/
+  const openCommentSection = () => {setIsOpened(element => !element)}
+  const changeStatusOfPost = () => {setInModification(element => !element)}
 
   const removePost = () => {
     const alertDelete = window.confirm("Voulez-vous supprimer définitivement ce post ?");
@@ -124,14 +83,6 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
       deletePost(true);
      }
   }
-
-  /*const removeCom = () => {
-    const alertDeleteCom = window.confirm("Voulez-vous supprimer définitivement ce commentaire ?");
-    if (alertDeleteCom) {
-      comDelete();
-      deleteCom(true);
-     }
-  }*/
 
   useEffect(() => {
     userService.getOneUser(post.userId)
@@ -149,7 +100,6 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     
     comService.getAllComsOfOnePost(post._id)
     .then((res) => {
-      console.log(res);
       setComData(res);
       setError(null)
     }).catch((err) => {
@@ -170,67 +120,66 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     const updatedAtTimePost = new Date(post.updatedAt).toLocaleTimeString();
 
     if (createdAtDatePost === updatedAtDatePost && createdAtTimePost === updatedAtTimePost) {
-      return <div>
-        <Price>{createdAtDatePost}</Price>
-        <Price>{createdAtTimePost}</Price>
+      return <div className="flex">
+          <p>le </p>
+          <p>{createdAtDatePost}</p>
+          <p> à </p>
+          <p>{createdAtTimePost}</p>
       </div>
     } else {
-      return <div>
-        <Price>{createdAtDatePost}</Price>
-        <Price>{createdAtTimePost}</Price>
-        <Price>{updatedAtDatePost}</Price>
-        <Price>{updatedAtTimePost}</Price>
+      return <div className="flex">
+            <p>le </p>
+            <p>{createdAtDatePost}</p>
+            <p> à </p>
+            <p>{createdAtTimePost}</p>
+            <p>, modifié le </p>
+            <p>{updatedAtDatePost}</p>
+            <p> à </p>
+            <p>{updatedAtTimePost}</p>
       </div>
     }
   }
 
-  /*const DisplayDateCom = props => {
-    const {com} = props;
-    const createdAtDateCom = new Date(com.createdAt).toLocaleDateString();
-    const createdAtTimeCom = new Date(com.createdAt).toLocaleTimeString();
-    const updatedAtDateCom = new Date(com.updatedAt).toLocaleDateString();
-    const updatedAtTimeCom = new Date(com.updatedAt).toLocaleTimeString();
-
-    if (createdAtDateCom === updatedAtDateCom && createdAtTimeCom === updatedAtTimeCom) {
-      return <div>
-        <Price>{createdAtDateCom}</Price>
-        <Price>{createdAtTimeCom}</Price>
-      </div>
-    } else {
-      return <div>
-        <Price>{createdAtDateCom}</Price>
-        <Price>{createdAtTimeCom}</Price>
-        <Price>{updatedAtDateCom}</Price>
-        <Price>{updatedAtTimeCom}</Price>
-      </div>
-    }
-  }*/
-
   const PostInReadOnly = props => {
     return <div>
-      <div>
-        <JobTitle>{userData.lastname}</JobTitle>
-        <Price>{userData.firstname}</Price>
-        <DisplayDatePost post={post}></DisplayDatePost> 
-        <TitleWrapper>
-          <Title>{post.text}</Title>
-        </TitleWrapper>
-        <img src={`${post.imageUrl}`} alt="" />
-      </div>         
+      <div className="flex space-between">
+        <div className="flex column w-100">
+          <div className="flex column center">
+            <div className="flex">
+              <p>Créé par </p>
+              <p><strong>{userData.firstname}</strong></p>
+              <p><strong>{userData.lastname}</strong></p>
+              <DisplayDatePost post={post}></DisplayDatePost> 
+            </div>
+            <TitleWrapper>
+              <Title>{post.text}</Title>
+            </TitleWrapper>
+          </div>
+          <div className="flex space-around">
+            <LikeOrDislikePost
+              postId={post._id}
+              userId={userData._id}
+              usersLiked={post.usersLiked}
+              usersDisliked={post.usersDisliked} />
+            {isOpened? 
+              <div>
+                <button onClick={openCommentSection}>Annuler</button>
+                <CreationComment postId={post._id} ></CreationComment>
+              </div> :
+              <button onClick={openCommentSection}>Commenter</button>
+            } 
+            {post.userId === currentUserId ?
+              <div className="flex">
+                <button onClick={changeStatusOfPost}>Modifier</button>
+                <button onClick={removePost}>Supprimer</button>
+              </div> : null
+              }
+          </div>
+        </div>   
+        <Picture src={`${post.imageUrl}`} alt=""></Picture>
+      </div>
       
-      {isOpened? 
-      <div>
-        <button onClick={openCommentSection}>Annuler</button>
-        <CreationComment postId={post._id} ></CreationComment>
-      </div> :
-      <button onClick={openCommentSection}>Commenter</button>
-      } 
-      {post.userId === currentUserId ?
-      <div>
-        <button onClick={changeStatusOfPost}>Modifier</button>
-        <button onClick={removePost}>Supprimer</button>
-      </div> : null
-      }                    
+                
     <ul>
       {comData &&
         comData.map(({ _id, text, userId, createdAt, updatedAt, imageUrl }) => (
@@ -269,7 +218,7 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     const formData = new FormData();
     formData.append('image', file);
     formData.append('text', postUpdate.text)
-console.log(post.imageUrl);
+
     postService.updatePost(formData, post._id)
     .then((res)=>console.log('nice', res))
     .catch((err)=>console.log('boooo', err));
@@ -287,27 +236,12 @@ console.log(post.imageUrl);
     .then((res)=>console.log('good', res))
     .catch((err)=>console.log('bad', err));
   }
-
-
-  /*const ComInDelete = props => {
-    return <form onSubmit={comDelete}> 
-      
-      <button type="submit">Supprimer</button>
-      <button onClick={() => removeCom(com._id)}>Annuler</button> 
-  </form>
-}
-  function comDelete(event) {
-    
-    comService.deleteCom(com._id)
-    .then((res)=>console.log('good', res))
-    .catch((err)=>console.log('bad', err));
-  }*/
  
 
   return (
         <ThemeContext.Consumer key={post._id}>
         {({ theme }) => (
-            <PostWrapper theme={theme}>
+            <PostWrapper theme={theme} className="card">
                 {loading && <div>Chargement de la publication...</div>}
                 {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
@@ -323,8 +257,6 @@ console.log(post.imageUrl);
             </PostWrapper>
         )}
         </ThemeContext.Consumer>
-
-    
   )
 }
 

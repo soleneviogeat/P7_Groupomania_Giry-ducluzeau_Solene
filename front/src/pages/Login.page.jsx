@@ -66,10 +66,10 @@ function Login() {
             <StyledTitle theme={theme}>
               Bienvenue sur le réseau social de communication et d'échange de Groupomania 
             </StyledTitle>
-                <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Adresse email</StyledLabel>
-                    <StyledInput
-                        theme={theme}
+              <div className="flex column center">
+                <InputWrapper theme={theme} className="form-group">
+                    <span theme={theme} className="form-text">Adresse email</span>
+                    <input
                         type="text"
                         placeholder='email'
                         id='email'
@@ -79,11 +79,12 @@ function Login() {
                             ...userLogin,
                             user_email: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
-                <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Mot de passe</StyledLabel>
-                    <StyledInput
+                <InputWrapper theme={theme}  className="form-group">
+                    <span className="form-text">Mot de passe</span>
+                    <input
                         theme={theme}
                         type="text"
                         placeholder='mot de passe'
@@ -94,9 +95,11 @@ function Login() {
                             ...userLogin,
                             user_password: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
                 <StyledButton onClick={submitLogin}>Se connecter</StyledButton>
+                </div>
             </StyledForm>
                 
           </LeftCol>

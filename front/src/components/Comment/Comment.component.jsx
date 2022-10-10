@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import colors from '../utils/colors'
-import { ThemeContext } from '../utils/ColorContext'
-import postService from '../services/post.service'
-import userService from '../services/user.service'
-import CreationComment from './CreationComment'
-import comService from '../services/com.service'
+import colors from '../../utils/colors'
+import { ThemeContext } from '../../utils/ColorContext'
+import postService from '../../services/post.service'
+import userService from '../../services/user.service'
+import CreationComment from './CreationComment.component'
+import comService from '../../services/commment.service'
 
 
 const PostWrapper = styled.div`
@@ -87,7 +87,6 @@ function CommentComponent({ com, updateCom, deleteCom }) {
   const [error, setError] = useState(null);
 
   const [inModification, setInModification] = useState(false)
-  const [inDelete, setInDelete] = useState(true)
   const [comUpdate, setComUpdate] = useState({
     text: com.text,
   });
@@ -222,7 +221,7 @@ function CommentComponent({ com, updateCom, deleteCom }) {
       <button type="submit">Supprimer</button>
       <button onClick={() => removeCom(com._id)}>Annuler</button> 
   </form>
-}
+  }
   function comDelete(event) {
     
     comService.deleteCom(com._id)

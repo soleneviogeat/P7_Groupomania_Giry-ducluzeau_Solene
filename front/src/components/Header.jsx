@@ -1,9 +1,14 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { StyledLink } from '../utils/Atoms'
 import LightLogo from '../assets/light-logo.png'
 import DarkLogo from '../assets/dark-logo.png'
 import { useTheme } from '../utils/hooks'
+import SignOutButton from './SignOutButton'
+import Admin from '../pages/Admin.page'
 
 const HomeLogo = styled.img`
   height: 0%;
@@ -17,8 +22,10 @@ const NavContainer = styled.nav`
   align-items: center;
 `
 
-function Header() {
+function Header(userId) {
   const { theme } = useTheme()
+
+  
 
   return (
     <NavContainer>
@@ -29,14 +36,11 @@ function Header() {
         <StyledLink $theme={theme} to="/">
           Connexion
         </StyledLink>
-        <StyledLink $theme={theme} to="/post">
-          Posts
+        <SignOutButton 
+        userId={userId} />
+        <StyledLink $theme={theme} to="/admin">
+        Admin
         </StyledLink>
-        <StyledLink $theme={theme} to="/createPost">
-          Créer un post
-        </StyledLink>
-        
-    
       </div>
     </NavContainer>
   )

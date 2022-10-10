@@ -1,22 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import colors from '../utils/colors'
-import { ThemeContext } from '../utils/ColorContext'
-import userService from '../services/user.service'
-import comService from '../services/com.service'
-
-
-const Price = styled.span`
-  padding-top: 10px;
-  font-weight: 500;
-  font-size: 20px;
-`
-const JobTitle = styled.h2`
-  padding-top: 10px;
-  font-size: 20px;
-  margin: 0;
-  font-weight: 500;
-`
+import colors from '../../utils/colors'
+import { ThemeContext } from '../../utils/ColorContext'
+import userService from '../../services/user.service'
+import comService from '../../services/commment.service'
 
 
 function CreationComment(com, updateCom, deleteCom) {
