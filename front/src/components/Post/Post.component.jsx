@@ -60,6 +60,7 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   const [isOpened, setIsOpened] = useState(false)
   const [inModification, setInModification] = useState(false)
+  const [currentPost, setCurrentPost] = useState(post);
   const [postUpdate, setPostUpdate] = useState({
     text: post.text,
   });
@@ -68,8 +69,6 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   function handleChange(event) {
     setFile(event.target.files[0])
-    const formData = new FormData();
-    formData.append('image', file);
   }
 
   const currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
@@ -149,22 +148,22 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
               <p>Créé par </p>
               <p><strong>{userData.firstname}</strong></p>
               <p><strong>{userData.lastname}</strong></p>
-              <DisplayDatePost post={post}></DisplayDatePost> 
+              <DisplayDatePost post={currentPost}></DisplayDatePost> 
             </div>
             <TitleWrapper>
-              <Title>{post.text}</Title>
+              <Title>{currentPost.text}</Title>
             </TitleWrapper>
           </div>
           <div className="flex space-around">
             <LikeOrDislikePost
-              postId={post._id}
+              postId={currentPost._id}
               userId={userData._id}
-              usersLiked={post.usersLiked}
-              usersDisliked={post.usersDisliked} />
+              usersLiked={currentPost.usersLiked}
+              usersDisliked={currentPost.usersDisliked} />
             {isOpened? 
               <div>
                 <button onClick={openCommentSection}>Annuler</button>
-                <CreationComment postId={post._id} ></CreationComment>
+                <CreationComment postId={currentPost._id} ></CreationComment>
               </div> :
               <button onClick={openCommentSection}>Commenter</button>
             } 
@@ -176,14 +175,14 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
               }
           </div>
         </div>   
-        <Picture src={`${post.imageUrl}`} alt=""></Picture>
+        <Picture src={`${currentPost.imageUrl}`} alt=""></Picture>
       </div>
       
                 
     <ul>
       {comData &&
         comData.map(({ _id, text, userId, createdAt, updatedAt, imageUrl }) => (
-          <li>
+          <li key={_id}>
           <CommentComponent
             com={{text, userId, createdAt, updatedAt, imageUrl, _id}}
             updateCom={updatePost}
@@ -198,13 +197,14 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
 
   const PostInModification = props => {
     return <form onSubmit={modifyPost}>
+      <h1>Modifier la publication</h1>
     <input autoFocus
         type="text"
         name="text"
         id="post"
-        value= {postUpdate.text}
-        onChange={(e) => setPostUpdate({
-            ...postUpdate,
+        value= {currentPost.text}
+        onChange={(e) => setCurrentPost({
+            ...currentPost,
             text: e.target.value
         })}/>
     <input type="file" name='image' onChange={handleChange}/>
@@ -217,11 +217,11 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     event.preventDefault()
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('text', postUpdate.text)
-
+    formData.append('text', currentPost.text)
     postService.updatePost(formData, post._id)
-    .then((res)=>console.log('nice', res))
+    .then((res)=>changeStatusOfPost())
     .catch((err)=>console.log('boooo', err));
+    
   }
 
   const PostInDelete = props => {
@@ -249,7 +249,7 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
                 {userData && 
                 <PostDetails theme={theme} >
                   { inModification ? 
-                      <PostInModification post={post} ></PostInModification> :
+                      <PostInModification post={currentPost} ></PostInModification> :
                       <PostInReadOnly></PostInReadOnly>
                   }  
                 </PostDetails>

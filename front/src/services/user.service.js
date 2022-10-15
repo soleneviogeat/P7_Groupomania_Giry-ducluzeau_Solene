@@ -1,3 +1,4 @@
+import httpService from "./http.service";
 class UserService {
     apiUrl = "http://localhost:3000/api/";
     
@@ -52,7 +53,7 @@ class UserService {
 
     async getAllUser() {
         const token = JSON.parse(localStorage.getItem('token'));
-        return fetch(this.apiUrl + 'users', {
+        return fetch(this.apiUrl + 'auth/users', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -83,6 +84,11 @@ class UserService {
         })
         .catch((err) => this.handleError(err));
     }
+
+    async deleteUser(userId) {
+        //const userId = JSON.parse(localStorage.getItem('currentUserId'));      
+        return httpService.delete('auth/?userId=' + userId);
+      }
 
 }
 export default new UserService();

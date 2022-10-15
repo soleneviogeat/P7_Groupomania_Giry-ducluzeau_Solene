@@ -149,10 +149,12 @@ exports.likePost = (req, res, next) => {
 
         if (like === 0) {
             if (indexLike === -1) {
+                //ici le probleme, indexDislike n'est pas l'index du user mais le code envoyé par le front (1, 0 ou -1)
                 post.usersDisliked.splice(indexDislike, 1)
                 post.dislikes = post.usersDisliked.length
             }
             else {
+                //ici aussi le probleme
                 post.usersLiked.splice(indexLike, 1)
                 post.likes = post.usersLiked.length
             }

@@ -10,7 +10,13 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import GlobalStyle from './utils/GlobalStyle'
 import { ThemeProvider } from './utils/ColorContext'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import './styles/App.scss'
+
+library.add(fas, faTwitter, faFontAwesome)
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

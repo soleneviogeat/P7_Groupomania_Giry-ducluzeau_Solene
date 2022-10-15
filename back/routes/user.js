@@ -12,5 +12,6 @@ verifySignUp.checkRolesExisted,*/ userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/users', userCtrl.getAllUsers);
 router.get('/users/:id', auth, userCtrl.getOneUser);
+router.delete('/:id', auth, userCtrl.deleteUser);
 
 module.exports = router;

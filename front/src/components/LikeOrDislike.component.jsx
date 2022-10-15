@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import postService from '../services/post.service'
 import userService from '../services/user.service'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
 
@@ -10,9 +10,12 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
     const [postData, setPostData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentUsersLiked, setCurrentUsersLiked] = useState(usersLiked);
+    const [currentUsersDisliked, setCurrentUsersDisliked] = useState(usersDisliked);
+    const [numbLikes, setNumbLikes] = useState(currentUsersLiked.length);
+    const [numbDislikes, setNumbDislikes] = useState(currentUsersDisliked.length);
 
     const currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
-    const currentPostId = JSON.parse(localStorage.getItem('currentPostId'));
 
     useEffect(() => {
         userService.getOneUser(userId)
@@ -28,24 +31,31 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
           setLoading(false);
         });
     }, []);
-
-
-    let numbLikes = usersLiked.length;
     
 
     function likeByPost() {
-        if (usersLiked.includes(currentUserId)) {
-            usersLiked.splice(usersLiked.findIndex(currentUserId => userId === currentUserId))
+        if (currentUsersLiked.includes(currentUserId)) {
+            currentUsersLiked.splice(currentUsersLiked.findIndex(currentUserId => userId === currentUserId))
+            console.log(currentUsersLiked);
+            console.log(currentUserId);
+            console.log(currentUsersLiked.findIndex(currentUserId => userId === currentUserId));
 
             postService.likePost(postId, 0)
-            .then((res)=>console.log('yeah', usersLiked))
-            .catch((err)=>console.log('nine', usersDisliked));
+            .then((res)=>{
+                setCurrentUsersLiked(currentUsersLiked);
+                setNumbLikes(currentUsersLiked.length)
+            })
+            .catch((err)=>console.log('nine', currentUsersDisliked));
         } else {
-            usersLiked.push(userId);
-            console.log('avant postService', userId);
-
+            currentUsersLiked.push(userId);
+            console.log(currentUsersLiked);
+            console.log(currentUserId);
+            console.log(currentUsersLiked.findIndex(currentUserId => userId === currentUserId));
             postService.likePost(postId, 1)
-            .then((res)=>console.log('super', postId))
+            .then((res)=>{
+                setCurrentUsersLiked(currentUsersLiked);
+                setNumbLikes(currentUsersLiked.length)
+            })
             .catch((err)=>console.log('pourri', postId));
         }
     }
@@ -53,8 +63,11 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
     function LikeButton(props) {
         return (
             <div className="flex" >
-              <button onClick={likeByPost} class='likeButton' disabled={usersDisliked.includes(currentUserId)} >
-                  Like
+              <button 
+              onClick={likeByPost}
+              className='likeButton' 
+              disabled={currentUsersDisliked.includes(currentUserId)} >
+                <FontAwesomeIcon icon="fa-solid fa-thumbs-up" />
               </button>
             <p>{numbLikes}</p>
             </div>
@@ -63,29 +76,41 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
 
 
     function dislikeByPost(props) {
-        if (usersDisliked.includes(currentUserId)) {
-            usersDisliked.splice(usersDisliked.findIndex(currentUserId => userId === currentUserId))
+        if (currentUsersDisliked.includes(currentUserId)) {
+            currentUsersDisliked.splice(currentUsersDisliked.findIndex(currentUserId => userId === currentUserId))
+            console.log(currentUsersDisliked.findIndex(currentUserId => userId === currentUserId));
 
             postService.likePost(postId, 0)
-            .then((res)=>console.log('yo', postId))
+            .then((res)=>{
+                console.log('mmmm', res);
+                setCurrentUsersDisliked(currentUsersDisliked);
+                setNumbDislikes(currentUsersDisliked.length)
+            })
             .catch((err)=>console.log('ah', postId));
         } else {
-            usersDisliked.push(userId);
+            currentUsersDisliked.push(userId);
 
             postService.likePost(postId, -1)
-            .then((res)=>console.log('génial', postId))
+            .then((res)=>{
+                setCurrentUsersDisliked(currentUsersDisliked);
+                setNumbDislikes(currentUsersDisliked.length)
+            })
             .catch((err)=>console.log('null', err));
         }        
     }
 
-    let numbDislikes = usersDisliked.length
         
     function DislikeButton(props) {
         return (
             <div className="flex" >
-                <button onClick={dislikeByPost} class='dislikeButton' disabled={usersLiked.includes(currentUserId)}>
-                    Dislike
+                <button 
+                onClick={dislikeByPost} 
+                className='dislikeButton' 
+                disabled={currentUsersLiked.includes(currentUserId)}>
+                    <FontAwesomeIcon icon="fa-solid fa-thumbs-down" />
                 </button>
+    
+
                 <p>{ numbDislikes }</p>
             </div>
             );
@@ -93,7 +118,7 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
         
 
     return (
-        <div Name="flex">
+        <div className="flex">
             <LikeButton postId={postId} />
             <DislikeButton postId={postId} />   
         </div>

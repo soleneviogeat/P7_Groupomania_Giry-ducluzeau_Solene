@@ -6,6 +6,22 @@ li {
     list-style: none;
 }
 
+
+.likeButton {
+    color: green;
+    &:disabled {
+        opacity: 0.2;
+     }
+}
+
+.dislikeButton {
+    color: red;
+    &:disabled {
+       opacity: 0.2;
+    }
+}
+
+
 .creationPost {
     padding: 5rem;
     background-color: lightblue;
@@ -42,6 +58,15 @@ li {
     &.flex-1 {
         flex: 1;
     } 
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    td, th {
+        border: 1px solid #ddd;
+        padding: 1em;
+    }
 }
 
 .w-100 {

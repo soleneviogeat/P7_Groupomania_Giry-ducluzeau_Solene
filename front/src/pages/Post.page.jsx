@@ -35,6 +35,7 @@ function HomePage() {
     });
   }, [])
 
+
   return (
     <div className="homepage">
         {loading && <div>Chargement des publications...</div>}
@@ -45,7 +46,7 @@ function HomePage() {
         <ul>
           {data &&
             data.map(({ _id, text, userId, createdAt, updatedAt, imageUrl, usersLiked, usersDisliked }) => (
-              <li>
+              <li key={_id}>
                 <PostComponent
                   post={{text, userId, createdAt, updatedAt, imageUrl, _id, usersLiked, usersDisliked}}
                   updatePost={updatePost}

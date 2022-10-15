@@ -10,7 +10,7 @@ function CreationPost({createPost}) {
 });
 
   function handleChange(event) {
-    setFile(event.target.files[0])
+    setFile(event.target.files[0]);
   }
   
   function handleSubmit(event) {

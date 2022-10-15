@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import userService from '../services/user.service'
-import Admin from '../components/Admin'
 
 function AdminPage() {
     const [userData, setUserData] = useState(null);
@@ -9,6 +8,7 @@ function AdminPage() {
 
 
     useEffect(() => {
+        
         userService.getAllUser()
         .then((res) => {
         setUserData(res);
@@ -20,8 +20,17 @@ function AdminPage() {
         })
         .finally(() => {
         setLoading(false);
-        });
+        });        
     })
+
+    function removeUser(id) {
+      console.log(id);
+      
+        userService.deleteUser(id)
+        .then((res)=>console.log('oki doki', res))
+        .catch((err)=>console.log('mamamiha', err));
+        
+    }
 
 
     return (
@@ -30,16 +39,29 @@ function AdminPage() {
             {error && (
               <div>{`Il y a un problème avec la récupération de la page - ${error}`}</div>
             )}
-            <ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>email</th>
+                        <th>role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
               {userData &&
                 userData.map(({ _id, lastname, firstname, email, password, role }) => (
-                  <li>
-                    <Admin
-                      userData={{ _id, lastname, firstname, email, password, role }}>
-                    </Admin>
-                  </li>
-                ))}
-            </ul>
+                  <tr key={_id}>
+                    <td>{lastname}</td>
+                    <td>{firstname}</td>
+                    <td>{email}</td>
+                    <td>{role}</td>
+                    <td><button onClick={() => removeUser(_id)}>Supprimer</button></td>
+                  </tr>
+                ))} 
+                </tbody>
+            </table>
         </div>
       )
 }

@@ -36,6 +36,9 @@ function Header(userId) {
         <StyledLink $theme={theme} to="/">
           Connexion
         </StyledLink>
+        <StyledLink $theme={theme} to="/post">
+          Publications
+        </StyledLink>
         <SignOutButton 
         userId={userId} />
         <StyledLink $theme={theme} to="/admin">
