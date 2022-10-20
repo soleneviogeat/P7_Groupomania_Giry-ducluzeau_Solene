@@ -44,4 +44,4 @@ function CreationPost({createPost}) {
   );
 }
 
-export default CreationPost;
+export default CreationPost

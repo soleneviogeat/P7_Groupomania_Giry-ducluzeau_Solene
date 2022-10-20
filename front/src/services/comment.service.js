@@ -38,9 +38,7 @@ class ComService {
             'content-type': 'multipart/form-data',
           },
         };
-        return axios.put(url, formData, config).then((response) => {
-          console.log(response.data);
-        });
+        return axios.put(url, formData, config);
     }
 
 

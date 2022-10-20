@@ -37,9 +37,9 @@ exports.createPost = (req, res, next) => {
 //Logique métier pour modifier un post
 
 exports.modifyPost = (req, res, next) => {
-    
     const postObject = req.file ? {
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        text: req.body.text
     } : { ...req.body };
     
     delete postObject._userId;
@@ -64,7 +64,8 @@ exports.modifyPost = (req, res, next) => {
                          updatedAt: Date.now(),
                          _id: req.params.id
                         })
-                    .then( res.status(200).json({message : 'Objet modifié!'}))
+                    .then(Post.findOne({ _id: req.params.id})
+                    .then((postUpdated) => res.status(200).json({post : postUpdated})))
                     .catch(error => res.status(401).json({ error }));
                 }
             });
@@ -186,7 +187,7 @@ exports.likePost = (req, res, next) => {
             }
         }
         post.save()
-        .then((post) => res.status(200).json({ message: "Post liké / disliké" }))
+        .then((post) => res.status(200).json({ post: post }))
         .catch((error) => res.status(500).json({ error }));
     })
     

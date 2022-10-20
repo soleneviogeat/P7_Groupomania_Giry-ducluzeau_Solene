@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { ThemeContext } from '../../utils/ColorContext'
 import userService from '../../services/user.service'
-import comService from '../../services/commment.service'
+import comService from '../../services/comment.service'
 import { StyledButton } from '../../utils/Atoms'
 
 
-function CreationComment(com, commentCreated, updateCom, deleteCom) {
+function CreationComment(com) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,8 +18,7 @@ function handleChange(event) {
   setFile(event.target.files[0])
 }
 
-function handleSubmit(event) {
-  
+function handleSubmit() {
   const formData = new FormData();
   formData.append('image', file);
   formData.append('text', comCreate.text)
@@ -42,8 +41,7 @@ function handleSubmit(event) {
       setLoading(false);
     });
   }, []);
-
-
+  
 
   return (
         <ThemeContext.Consumer key={com._id}>
@@ -63,13 +61,13 @@ function handleSubmit(event) {
                           name="com"
                           id="com"
                           placeholder='Ecrire un commentaire'
-                          value={ comCreate.text }
+                          value={comCreate.text}
                           onChange={(e) => setComCreate({
                               ...comCreate,
-                              text: e.target.value
+                              text: e.target.value,
                           })}/>
                         <div className='buttonCreationPost'>
-                          <input type="file" name='image' onChange={handleChange}/>
+                          <input className='inputFile' type="file" name='image' onChange={handleChange}/>
                           <StyledButton type="submit">Publier</StyledButton>
                         </div>
                       </form>

@@ -6,6 +6,10 @@ li {
     list-style: none;
 }
 
+.inputFile {
+    color: #F9F9FC;
+}
+
 .likeButton {
     border: none;
     background-color: #F9F9FC;
@@ -25,6 +29,10 @@ li {
     &:disabled {
        opacity: 0.2;
     }
+}
+
+.infosPost {
+    display: flex;
 }
 
 .creationPost {
@@ -126,21 +134,14 @@ li {
     padding: 2em;
 }
 
-.infosPost {
-    display: flex;
-}
-
 .margin-page {
     margin-left: 15em;
     margin-right: 15em;
 }
 
-
-
 .margin-comment {
     margin: 20px 100px;
 }
-
 
 .commentCreatSection {
     display: flex;

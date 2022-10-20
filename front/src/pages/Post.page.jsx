@@ -54,7 +54,6 @@ function HomePage() {
           <div>{`Il y a un problème avec la récupération des publications - ${error}`}</div>
         )}
         <h1 className='flex center'>Bienvenue {userData.firstname} {userData.lastname}</h1>
-
         <CreationPost createPost={createPost}></CreationPost>
         <ul className='margin-page'>
           {data &&

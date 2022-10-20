@@ -5,7 +5,7 @@ import { ThemeContext } from '../../utils/ColorContext'
 import postService from '../../services/post.service'
 import userService from '../../services/user.service'
 import CreationComment from '../Comment/CreationComment.component'
-import comService from '../../services/commment.service'
+import comService from '../../services/comment.service'
 import CommentComponent from '../Comment/Comment.component'
 import LikeOrDislikePost from '../LikeOrDislike.component'
 import { StyledButton } from '../../utils/Atoms'
@@ -53,7 +53,7 @@ const TitleWrapper = styled.div`
 `
 
 
-function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}) {
+function PostComponent({post, updatePost, deletePost, com, updateCom}) {
   const [postUser, setPostUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [comData, setComData] = useState(null);
@@ -63,6 +63,10 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
   const [isOpened, setIsOpened] = useState(false)
   const [inModification, setInModification] = useState(false)
   const [currentPost, setCurrentPost] = useState(post);
+  const [textInput, setTextInput] = useState({
+    text: post.text,
+    updatedAt: currentPost.updatedAt
+  });
 
   const [file, setFile] = useState()
 
@@ -74,6 +78,8 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
   const openCommentSection = () => {setIsOpened(element => !element)}
   const changeStatusOfPost = () => {setInModification(element => !element)}
   const commentCreated = () => {getAllcommentOfThePost()}
+  const deleteCom = (childData) => {getAllcommentOfThePost()}
+
 
 
   function getAllcommentOfThePost() {
@@ -126,11 +132,11 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     const {post} = props;
     const createdAtDatePost = new Date(post.createdAt).toLocaleDateString();
     const createdAtTimePost = new Date(post.createdAt).toLocaleTimeString();
-    const updatedAtDatePost = new Date(currentPost.updatedAt).toLocaleDateString();
-    const updatedAtTimePost = new Date(currentPost.updatedAt).toLocaleTimeString();
+    const updatedAtDatePost = new Date(textInput.updatedAt).toLocaleDateString();
+    const updatedAtTimePost = new Date(textInput.updatedAt).toLocaleTimeString();
 
     if (createdAtDatePost === updatedAtDatePost && createdAtTimePost === updatedAtTimePost) {
-      return <div className="infosPost">
+      return <div className="flex">
         <div className='flex start'>
             <p>Créé par </p>
             <p><strong>{postUser.firstname}</strong></p>
@@ -142,7 +148,7 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
             <p> à </p>
             <p>{createdAtTimePost}</p>
           </div>
-      </div>
+        </div>
     } else {
       return <div className="infosPost">
         <div className='flex start'>
@@ -191,7 +197,6 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
           </div> : null
           }
       </div>
-      
       <div className='commentSection'>
         <p>Commentaires</p>
         <ul>
@@ -201,8 +206,8 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
                 <li key={_id} className="margin-comment">
                 <CommentComponent
                   com={{text, userId, createdAt, updatedAt, imageUrl, _id}}
-                  updateCom={updatePost}
-                  deleteCom={deletePost}>
+                  updateCom={updateCom}
+                  deleteCom={deleteCom}>
                 </CommentComponent>
                 </li>
               ))}     
@@ -230,14 +235,13 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
       type="text"
       name="text"
       id="post"
-      value= {currentPost.text}
-      onChange={(e) => setCurrentPost({
-          ...currentPost,
+      value= {textInput.text}
+      onChange={(e) => setTextInput({
           text: e.target.value,
           updatedAt: new Date()
       })}/>
     <div className='buttonCreationPost'>
-      <input type="file" name='image' onChange={handleChange}/>
+      <input className='inputFile' type="file" name='image' onChange={handleChange}/>
       <StyledButton type="submit">Modifier</StyledButton>
       <StyledButton onClick={changeStatusOfPost}>Annuler</StyledButton> 
     </div>
@@ -248,17 +252,18 @@ function PostComponent({post, updatePost, deletePost, com, updateCom, deleteCom}
     event.preventDefault()
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('text', currentPost.text)
+    formData.append('text', textInput.text)
     
     postService.updatePost(formData, post._id)
     .then((res)=>{
+      setCurrentPost(res.data.post);
       changeStatusOfPost();
-    })    
+     })    
   }
 
   //Suppression d'un post
   const removePost = () => {
-    const alertDelete = window.confirm("Voulez-vous supprimer définitivement ce post ?");
+    const alertDelete = window.confirm("Voulez-vous supprimer définitivement cette publication ?");
     if (alertDelete) {
       postDelete();
      }

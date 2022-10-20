@@ -34,27 +34,19 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
 
     //Gestion des likes sur les posts
     function likeByPost() {
-        if (currentUsersLiked.includes(currentUserId)) {
-            currentUsersLiked.splice(currentUsersLiked.findIndex(currentUserId => userId === currentUserId))
-
-            postService.likePost(postId, 0)
-            .then(()=>{
-                setCurrentUsersLiked(currentUsersLiked);
-                setNumbLikes(currentUsersLiked.length)
-            })
-        } else {
-            currentUsersLiked.push(userId);
-           
-            postService.likePost(postId, 1)
-            .then((res)=>{
-                setCurrentUsersLiked(currentUsersLiked);
-                setNumbLikes(currentUsersLiked.length)
-            })
-        }
+        let code = 0
+        if (!currentUsersLiked.includes(currentUserId)) {
+            code = 1;
+        } 
+        postService.likePost(postId, code)
+        .then((res)=>{
+            setCurrentUsersLiked(res.post.usersLiked);
+            setNumbLikes(res.post.likes)
+        })
     }
 
     //Bouton "like"
-    function LikeButton(props) {
+    function LikeButton() {
         return (
             <div className="flex" >
               <button 
@@ -69,28 +61,20 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
     }
 
     //Gestion des dislikes sur les posts
-    function dislikeByPost(props) {
-        if (currentUsersDisliked.includes(currentUserId)) {
-            currentUsersDisliked.splice(currentUsersDisliked.findIndex(currentUserId => userId === currentUserId))
-
-            postService.likePost(postId, 0)
-            .then((res)=>{
-                setCurrentUsersDisliked(currentUsersDisliked);
-                setNumbDislikes(currentUsersDisliked.length)
-            })
-        } else {
-            currentUsersDisliked.push(userId);
-
-            postService.likePost(postId, -1)
-            .then((res)=>{
-                setCurrentUsersDisliked(currentUsersDisliked);
-                setNumbDislikes(currentUsersDisliked.length)
-            })
-        }        
+    function dislikeByPost() {
+        let code = 0
+        if (!currentUsersDisliked.includes(currentUserId)) {
+            code = -1;
+        }       
+        postService.likePost(postId, code)
+        .then((res)=>{
+            setCurrentUsersDisliked(res.post.usersDisliked);
+            setNumbDislikes(res.post.dislikes)
+        })
     }
 
     //Bouton "dislike"
-    function DislikeButton(props) {
+    function DislikeButton() {
         return (
             <div className="flex" >
                 <button 

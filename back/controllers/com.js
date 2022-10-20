@@ -38,12 +38,12 @@ exports.createCom = (req, res, next) => {
 
 exports.modifyCom = (req, res, next) => {
     const comObject = req.file ? {
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        text: req.body.text
     } : { ...req.body };
 
     delete comObject._userId;
     Com.findOne({_id: req.params.id})
-
         .then((com) => {
             User.findById(req.auth.userId)
                 .then((user) => {
@@ -59,8 +59,15 @@ exports.modifyCom = (req, res, next) => {
                             } 
                         }
         
-                        Com.updateOne({ _id: req.params.id}, { ...comObject, _id: req.params.id})
-                        .then(() => res.status(200).json({message : 'Objet modifié!'}))
+                        Com.updateOne({ _id: req.params.id}, { 
+                            ...comObject, 
+                            updatedAt: Date.now(),
+                            _id: req.params.id
+                        })
+                        .then(() => Com.findOne({ _id: req.params.id}))
+                        .then((comUpdated) => {
+                            res.status(200).json({com : comUpdated})
+                        } )
                         .catch(error => res.status(401).json({ error }));
                     }
                 });
