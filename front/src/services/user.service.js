@@ -38,13 +38,8 @@ class UserService {
                 return res.json()
             }
         })
-        .then((signUpRes) => {
-            const object = {
-                user: signUpRes,
-                pass: user
-            }
-            localStorage.setItem("currentUserId", JSON.stringify(signUpRes.id));
-            return object;
+        .then(() => {
+            return this.login(user.email, user.password)
         })
         .catch((err) => {
             console.error(err);
@@ -85,9 +80,12 @@ class UserService {
         .catch((err) => this.handleError(err));
     }
 
-    async deleteUser(userId) {
-        //const userId = JSON.parse(localStorage.getItem('currentUserId'));      
+    async deleteUser(userId) {    
         return httpService.delete('auth/?userId=' + userId);
+      }
+
+      async changeToAdmin(userId) {     
+        return httpService.put('auth/changeToAdmin/' + userId);
       }
 
 }

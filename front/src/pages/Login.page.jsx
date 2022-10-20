@@ -5,7 +5,9 @@ import { useTheme } from '../utils/hooks'
 import { useState } from 'react'
 import userService from '../services/user.service'
 import { useNavigate } from 'react-router-dom'
-import { InputWrapper, StyledInput, StyledLabel, StyledTitle } from '../utils/Components'
+import { InputWrapper, StyledTitle } from '../utils/Components'
+import LightLogo from '../assets/light-logo.png'
+import RedLogo from '../assets/red-logo.png'
 
 
 const LoginWrapper = styled.div`
@@ -15,7 +17,7 @@ const LoginWrapper = styled.div`
 `
 
 const LoginContainer = styled.div`
-  margin: 30px;
+
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
   display: flex;
@@ -31,6 +33,9 @@ const LeftCol = styled.div`
   ${StyledLink} {
     max-width: 250px;
   }
+`
+const HomeLogo = styled.img`
+  width: 22rem;
 `
 
 const StyledForm = styled.div`
@@ -59,9 +64,11 @@ function Login() {
 
     return (
       <LoginWrapper>
-        <LoginContainer theme={theme}>
+        <LoginContainer theme={theme} className='card'>
           <LeftCol>
-            
+            <div className='flex center'>
+              <HomeLogo src={theme === 'light' ? RedLogo : LightLogo} />
+            </div>
             <StyledForm>
             <StyledTitle theme={theme}>
               Bienvenue sur le réseau social de communication et d'échange de Groupomania 
@@ -86,7 +93,7 @@ function Login() {
                     <span className="form-text">Mot de passe</span>
                     <input
                         theme={theme}
-                        type="text"
+                        type="password"
                         placeholder='mot de passe'
                         id='password'
                         name='password'
@@ -100,8 +107,7 @@ function Login() {
                 </InputWrapper>
                 <StyledButton onClick={submitLogin}>Se connecter</StyledButton>
                 </div>
-            </StyledForm>
-                
+            </StyledForm> 
           </LeftCol>
         </LoginContainer>
       </LoginWrapper>

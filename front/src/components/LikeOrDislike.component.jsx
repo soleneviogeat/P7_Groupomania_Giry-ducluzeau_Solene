@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
 
     const [userData, setUserData] = useState(null);
-    const [postData, setPostData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentUsersLiked, setCurrentUsersLiked] = useState(usersLiked);
@@ -33,33 +32,28 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
     }, []);
     
 
+    //Gestion des likes sur les posts
     function likeByPost() {
         if (currentUsersLiked.includes(currentUserId)) {
             currentUsersLiked.splice(currentUsersLiked.findIndex(currentUserId => userId === currentUserId))
-            console.log(currentUsersLiked);
-            console.log(currentUserId);
-            console.log(currentUsersLiked.findIndex(currentUserId => userId === currentUserId));
 
             postService.likePost(postId, 0)
-            .then((res)=>{
+            .then(()=>{
                 setCurrentUsersLiked(currentUsersLiked);
                 setNumbLikes(currentUsersLiked.length)
             })
-            .catch((err)=>console.log('nine', currentUsersDisliked));
         } else {
             currentUsersLiked.push(userId);
-            console.log(currentUsersLiked);
-            console.log(currentUserId);
-            console.log(currentUsersLiked.findIndex(currentUserId => userId === currentUserId));
+           
             postService.likePost(postId, 1)
             .then((res)=>{
                 setCurrentUsersLiked(currentUsersLiked);
                 setNumbLikes(currentUsersLiked.length)
             })
-            .catch((err)=>console.log('pourri', postId));
         }
     }
 
+    //Bouton "like"
     function LikeButton(props) {
         return (
             <div className="flex" >
@@ -74,19 +68,16 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
         );
     }
 
-
+    //Gestion des dislikes sur les posts
     function dislikeByPost(props) {
         if (currentUsersDisliked.includes(currentUserId)) {
             currentUsersDisliked.splice(currentUsersDisliked.findIndex(currentUserId => userId === currentUserId))
-            console.log(currentUsersDisliked.findIndex(currentUserId => userId === currentUserId));
 
             postService.likePost(postId, 0)
             .then((res)=>{
-                console.log('mmmm', res);
                 setCurrentUsersDisliked(currentUsersDisliked);
                 setNumbDislikes(currentUsersDisliked.length)
             })
-            .catch((err)=>console.log('ah', postId));
         } else {
             currentUsersDisliked.push(userId);
 
@@ -95,11 +86,10 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
                 setCurrentUsersDisliked(currentUsersDisliked);
                 setNumbDislikes(currentUsersDisliked.length)
             })
-            .catch((err)=>console.log('null', err));
         }        
     }
 
-        
+    //Bouton "dislike"
     function DislikeButton(props) {
         return (
             <div className="flex" >
@@ -109,8 +99,6 @@ function LikeOrDislikePost({postId, userId, usersLiked, usersDisliked}) {
                 disabled={currentUsersLiked.includes(currentUserId)}>
                     <FontAwesomeIcon icon="fa-solid fa-thumbs-down" />
                 </button>
-    
-
                 <p>{ numbDislikes }</p>
             </div>
             );

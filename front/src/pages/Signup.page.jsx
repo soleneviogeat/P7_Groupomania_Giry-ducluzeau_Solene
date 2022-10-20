@@ -5,15 +5,18 @@ import { useTheme } from '../utils/hooks'
 import { useState } from 'react'
 import userService from '../services/user.service'
 import { useNavigate } from "react-router-dom";
-import { InputWrapper, StyledInput, StyledLabel, StyledTitle } from '../utils/Components'
+import { InputWrapper, StyledTitle } from '../utils/Components'
+import LightLogo from '../assets/light-logo.png'
+import RedLogo from '../assets/red-logo.png'
+
 
 const SignupWrapper = styled.div`
   display: flex;
   justify-content: center;
+  padding: 1rem;
 `
 
 const SignupContainer = styled.div`
-  margin: 30px;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
   display: flex;
@@ -29,6 +32,17 @@ const LeftCol = styled.div`
   ${StyledLink} {
     max-width: 250px;
   }
+`
+const HomeLogo = styled.img`
+  width: 22rem;
+`
+
+const StyledForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
 `
 
 function Signup() {
@@ -51,20 +65,23 @@ function Signup() {
       };
       userService.signup(user)
       .then(()=>navigate('/post'))
-      .catch((err)=>console.log('noooon', err));
-
   };
 
     return (
       <SignupWrapper>
-        <SignupContainer theme={theme}>
+        <SignupContainer theme={theme} className='card'>
           <LeftCol>
+          <div className='flex center'>
+            <HomeLogo src={theme === 'light' ? RedLogo : LightLogo} />
+          </div>
+          <StyledForm>
             <StyledTitle theme={theme}>
               Bienvenue sur le réseau social de communication et d'échange de Groupomania 
             </StyledTitle>
-            <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Nom de famille</StyledLabel>
-                    <StyledInput
+              <div className="flex column center">
+                <InputWrapper theme={theme} className="form-group">
+                    <span theme={theme} className="form-text">Nom de famille</span>
+                    <input
                         theme={theme}
                         type="text"
                         placeholder='nom de famille'
@@ -75,11 +92,12 @@ function Signup() {
                             ...userSignup,
                             user_lastname: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
-                <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Prénom</StyledLabel>
-                    <StyledInput
+                <InputWrapper theme={theme} className="form-group">
+                    <span theme={theme} className="form-text">Prénom</span>
+                    <input
                         theme={theme}
                         type="text"
                         placeholder='prénom'
@@ -90,11 +108,12 @@ function Signup() {
                             ...userSignup,
                             user_firstname: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
-                <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Adresse email</StyledLabel>
-                    <StyledInput
+                <InputWrapper theme={theme} className="form-group">
+                    <span theme={theme} className="form-text">Adresse email</span>
+                    <input
                         theme={theme}
                         type="text"
                         placeholder='email'
@@ -105,13 +124,14 @@ function Signup() {
                             ...userSignup,
                             user_email: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
-                <InputWrapper theme={theme}>
-                    <StyledLabel theme={theme}>Mot de passe</StyledLabel>
-                    <StyledInput
+                <InputWrapper theme={theme} className="form-group">
+                    <span theme={theme} className="form-text">Mot de passe</span>
+                    <input
                         theme={theme}
-                        type="text"
+                        type="password"
                         placeholder='mot de passe'
                         id='password'
                         name='password'
@@ -120,9 +140,12 @@ function Signup() {
                             ...userSignup,
                             user_password: e.target.value
                         })}
+                        className="form-input"
                     />
                 </InputWrapper>
                 <StyledButton onClick={submitSignup}>S'inscrire</StyledButton>
+            </div>
+                </StyledForm>
           </LeftCol>
         </SignupContainer>
       </SignupWrapper>

@@ -23,10 +23,7 @@ class PostService {
               'content-type': 'multipart/form-data',
             },
           };
-        return axios.post(url, formData, config).then((response) => {
-            console.log(response.data);
-            //const filename = response.data.file.filename;
-          });
+        return axios.post(url, formData, config);
     }
 
     async updatePost(formData, postId) {
@@ -39,9 +36,7 @@ class PostService {
             'content-type': 'multipart/form-data',
           },
         };
-        return axios.put(url, formData, config).then((response) => {
-          console.log(response.data);
-        });
+        return axios.put(url, formData, config);
     }
 
     async deletePost(postId) {

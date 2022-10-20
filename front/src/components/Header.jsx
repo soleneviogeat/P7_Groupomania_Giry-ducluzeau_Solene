@@ -1,18 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { StyledLink } from '../utils/Atoms'
 import LightLogo from '../assets/light-logo.png'
-import DarkLogo from '../assets/dark-logo.png'
+import DarkLogo from '../assets/dark-logo.svg'
 import { useTheme } from '../utils/hooks'
 import SignOutButton from './SignOutButton'
-import Admin from '../pages/Admin.page'
+import colors from '../utils/colors'
 
 const HomeLogo = styled.img`
   height: 0%;
-  width: 17rem;
+  width: 18rem;
 `
 
 const NavContainer = styled.nav`
@@ -20,30 +17,25 @@ const NavContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: solid 0.3rem ${colors.tertiaire}
 `
 
 function Header(userId) {
   const { theme } = useTheme()
-
   
 
   return (
-    <NavContainer>
+    <NavContainer className='header'>
+      <div>
       <Link to="/">
         <HomeLogo src={theme === 'light' ? DarkLogo : LightLogo} />
       </Link>
-      <div>
-        <StyledLink $theme={theme} to="/">
-          Connexion
-        </StyledLink>
-        <StyledLink $theme={theme} to="/post">
-          Publications
-        </StyledLink>
+      </div>
+      <div className='navbar'>
         <SignOutButton 
+        $theme={theme} 
+        to="/"
         userId={userId} />
-        <StyledLink $theme={theme} to="/admin">
-        Admin
-        </StyledLink>
       </div>
     </NavContainer>
   )

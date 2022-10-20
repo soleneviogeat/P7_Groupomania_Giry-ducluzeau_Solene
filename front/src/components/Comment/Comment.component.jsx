@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import colors from '../../utils/colors'
 import { ThemeContext } from '../../utils/ColorContext'
-import postService from '../../services/post.service'
 import userService from '../../services/user.service'
-import CreationComment from './CreationComment.component'
 import comService from '../../services/commment.service'
+import { StyledButton } from '../../utils/Atoms'
 
 
 const PostWrapper = styled.div`
@@ -13,8 +12,7 @@ const PostWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 90px 0;
-  margin: 2rem 5rem;
+  padding: 1em;
   border-radius: 1rem;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
@@ -24,15 +22,13 @@ const PostDetails = styled.div`
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-  img {
-    max-height: 5rem;
-  }
 `
 
 const Picture = styled.img`
-  height: 150px;
-  width: 150px;
-  border-radius: 75px;
+  max-height: 15em;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
 `
 
 const Title = styled.h1`
@@ -41,55 +37,21 @@ const Title = styled.h1`
   font-weight: 500;
 `
 
-const JobTitle = styled.h2`
-  padding-top: 10px;
-  font-size: 20px;
-  margin: 0;
-  font-weight: 500;
-`
-
-const Location = styled.span`
-  margin-left: 15px;
-  color: ${colors.secondary};
-`
-
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `
 
-const Price = styled.span`
-  padding-top: 10px;
-  font-weight: 500;
-  font-size: 20px;
-`
-
-const SkillsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 10px 0;
-`
-
-const Skill = styled.span`
-  border-radius: 5px;
-  padding: 5px;
-  margin-right: 5px;
-  border: 1px solid
-    ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};
-`
-
 
 function CommentComponent({ com, updateCom, deleteCom }) {
   const [userData, setUserData] = useState(null);
   const [comData, setComData] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [currentCom, setCurrentCom] = useState(com)
   const [inModification, setInModification] = useState(false)
-  const [comUpdate, setComUpdate] = useState({
-    text: com.text,
-  });
 
   const [file, setFile] = useState()
 
@@ -105,16 +67,22 @@ function CommentComponent({ com, updateCom, deleteCom }) {
     setInModification(element => !element)
   }
 
-  const removeCom = () => {
-    const alertDeleteCom = window.confirm("Voulez-vous supprimer définitivement ce commentaire ?");
-    if (alertDeleteCom) {
-      comDelete();
-      deleteCom(true);
-     }
-  }
 
   useEffect(() => {
-    userService.getOneUser(com.userId)
+    userService.getOneUser(currentUserId)
+    .then((res) => {
+      setCurrentUser(res);
+      setError(null);
+    })
+    .catch((err) => {
+      setError(err.message);
+      setCurrentUser(null);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+
+    userService.getOneUser(currentCom.userId)
     .then((res) => {
       setUserData(res);
       setError(null);
@@ -127,7 +95,7 @@ function CommentComponent({ com, updateCom, deleteCom }) {
       setLoading(false);
     });
 
-    comService.getAllComsOfOnePost(com._id)
+    comService.getAllComsOfOnePost(currentCom._id)
     .then((res) => {
       setComData(res);
       setError(null)
@@ -142,66 +110,93 @@ function CommentComponent({ com, updateCom, deleteCom }) {
   }, []);
 
 
-  const DisplayDateCom = props => {
-    const {com} = props;
-    const createdAtDateCom = new Date(com.createdAt).toLocaleDateString();
-    const createdAtTimeCom = new Date(com.createdAt).toLocaleTimeString();
-    const updatedAtDateCom = new Date(com.updatedAt).toLocaleDateString();
-    const updatedAtTimeCom = new Date(com.updatedAt).toLocaleTimeString();
+  //Gestion des dates de création et de modification des commentaires
+  const InfosCom = props => {
+    const createdAtDateCom = new Date(currentCom.createdAt).toLocaleDateString();
+    const createdAtTimeCom = new Date(currentCom.createdAt).toLocaleTimeString();
+    const updatedAtDateCom = new Date(currentCom.updatedAt).toLocaleDateString();
+    const updatedAtTimeCom = new Date(currentCom.updatedAt).toLocaleTimeString();
 
     if (createdAtDateCom === updatedAtDateCom && createdAtTimeCom === updatedAtTimeCom) {
-      return <div>
-        <Price>{createdAtDateCom}</Price>
-        <Price>{createdAtTimeCom}</Price>
+      return <div className="infosPost">
+        <div className='flex start'>
+          <p>Créé par</p>
+          <p><strong>{userData.lastname}</strong></p>
+          <p><strong>{userData.firstname}</strong></p>
+        </div>
+        <div className='flex start'>
+          <p>le </p>
+          <p>{createdAtDateCom}</p>
+          <p> à </p>
+          <p>{createdAtTimeCom}</p>
+        </div>
+        
       </div>
     } else {
-      return <div>
-        <Price>{createdAtDateCom}</Price>
-        <Price>{createdAtTimeCom}</Price>
-        <Price>{updatedAtDateCom}</Price>
-        <Price>{updatedAtTimeCom}</Price>
+      return <div className="infosPost">
+        <div className='flex start'>
+          <p>Créé par</p>
+          <p><strong>{userData.lastname}</strong></p>
+          <p><strong>{userData.firstname}</strong></p>
+        </div>
+         
+        <div className='flex start'>
+            <p>le </p>
+          <p>{createdAtDateCom}</p>
+          <p> à </p>
+          <p>{createdAtTimeCom}</p>
+        </div>
+        <div className='flex start'>
+          <p>Modifié le </p>
+          <p>{updatedAtDateCom}</p>
+          <p> à </p>
+          <p>{updatedAtTimeCom}</p>
+        </div>
       </div>
     }
   }
 
+  //Visualisation d'un commentaire
   const ComInReadOnly = props => {
-    return <div>
-      <div>
-        <JobTitle>{userData.lastname}</JobTitle>
-        <Price>{userData.firstname}</Price>
-        <DisplayDateCom com={com}></DisplayDateCom> 
+    return <div className="flex column">
+      <div className="flex column">
+        <div className="flex commentDetails">
+          <InfosCom com={currentCom}></InfosCom> 
+        </div>
         <TitleWrapper>
-          <Title>{com.text}</Title>
+          <Title>{currentCom.text}</Title>
         </TitleWrapper>
-        <img src={`${com.imageUrl}`} alt="" />
+        <Picture src={`${currentCom.imageUrl}`} alt=""></Picture>
       </div> 
-
-     
-
-      {com.userId === currentUserId ?
-      <div>
-        <button onClick={changeStatusOfCom}>Modifier</button>
-        <button onClick={removeCom}>Supprimer</button>
-      </div> : null
-      }                     
-  </div>
+      {currentCom.userId === currentUserId || (currentUser && currentUser.isAdmin === true) ?
+        <div className='padding-1'>
+          <button className='buttonUser' onClick={changeStatusOfCom}>Modifier</button>
+          <button className='buttonUser' onClick={removeCom}>Supprimer</button>
+        </div> : null
+      } 
+                         
+    </div>
   }
 
-
+  //Modification d'un commentaire
   const ComInModification = props => {
-    return <form onSubmit={modifyCom}>
-    <input autoFocus
-        type="text"
-        name="text"
-        id="com"
-        value= {comUpdate.text}
-        onChange={(e) => setComUpdate({
-            ...comUpdate,
-            text: e.target.value
-        })}/>
-    <input type="file" name='image' title={comUpdate.imageUrl} onChange={handleChange}/>
-    <button type="submit">Modifier</button>
-    <button onClick={changeStatusOfCom}>Annuler</button> 
+    return <form onSubmit={modifyCom} className="formCreationPost">
+      <p>Modification du commentaire</p>
+      <input autoFocus
+        className='inputFileCreationPost'
+          type="text"
+          name="text"
+          id="com"
+          value= {currentCom.text}
+          onChange={(e) => setCurrentCom({
+              ...currentCom,
+              text: e.target.value
+          })}/>
+      <div className='buttonCreationPost'>
+        <input type="file" name='image' title={currentCom.imageUrl} onChange={handleChange}/>
+        <StyledButton type="submit">Modifier</StyledButton>
+        <StyledButton onClick={changeStatusOfCom}>Annuler</StyledButton>
+      </div> 
     </form>
   }
 
@@ -209,24 +204,30 @@ function CommentComponent({ com, updateCom, deleteCom }) {
     event.preventDefault()
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('text', comUpdate.text)
+    formData.append('text', currentCom.text)
     
-    comService.updateCom(formData, com._id)
-    .then((res)=>console.log('nice', res))
-    .catch((err)=>console.log('boooo', err));
+    comService.updateCom(formData, currentCom._id)
+    .then((res)=>changeStatusOfCom())
+  }
+
+//Suppression d'un commentaire
+  const removeCom = () => {
+    const alertDeleteCom = window.confirm("Voulez-vous supprimer définitivement ce commentaire ?");
+    if (alertDeleteCom) {
+      comDelete();
+      deleteCom(true);
+     }
   }
 
   const ComInDelete = props => {
     return <form onSubmit={comDelete}> 
       <button type="submit">Supprimer</button>
-      <button onClick={() => removeCom(com._id)}>Annuler</button> 
+      <button onClick={() => removeCom(currentCom._id)}>Annuler</button> 
   </form>
   }
-  function comDelete(event) {
-    
-    comService.deleteCom(com._id)
-    .then((res)=>console.log('good', res))
-    .catch((err)=>console.log('bad', err));
+
+  function comDelete(event) { 
+    comService.deleteCom(currentCom._id)
   }
  
 
@@ -242,42 +243,18 @@ function CommentComponent({ com, updateCom, deleteCom }) {
                 <PostDetails theme={theme} >
                    
                   { inModification ? 
-                      <ComInModification com={com} ></ComInModification> :
+                      <ComInModification com={currentCom} ></ComInModification> :
                       <ComInReadOnly></ComInReadOnly>
                   }  
                 </PostDetails>
-                }              
-                          
-                  
+                }                  
             </PostWrapper>
         )}
         </ThemeContext.Consumer>
-
-    
   )
 }
 
 export default CommentComponent
 
-/**
- * { inModification ? 
-                      <ComInModification com={com} ></ComInModification> :
-                      <ComInReadOnly></ComInReadOnly>
-                  } 
- */
 
-/**
- * com={{text, userId, createdAt, updatedAt, imageUrl, _id}}
-                            updateCom={updateCom}
-                            deleteCom={deleteCom}
- */
-
-/**
- *       {post.userId === currentUserId ?
-      <div>
-        <button onClick={changeStatusOfPost}>Modifier</button>
-        <button onClick={removePost}>Supprimer</button>
-      </div> : null
-      } 
- */
 

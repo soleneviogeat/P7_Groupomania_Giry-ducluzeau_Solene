@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import colors from './colors'
 import { useTheme } from './hooks'
 
 const StyledGlobalStyle = createGlobalStyle`
@@ -10,10 +11,11 @@ const StyledGlobalStyle = createGlobalStyle`
     }
     body {
         background-color: ${(props) =>
-          props.isDarkMode ? '#2F2E41' : 'white'};
+          props.isDarkMode ? colors.tertiaire : colors.secondary};
         margin: 2rem;
     }
 `
+
 
 function GlobalStyle() {
   const { theme } = useTheme()

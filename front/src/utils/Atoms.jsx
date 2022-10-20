@@ -39,6 +39,8 @@ export const StyledLink = styled(Link)`
 `
 
 export const StyledButton = styled.button`
+margin: 0.3em;
+border: none;
 padding: 10px 15px;
 color: white; 
 border-radius: 30px; 

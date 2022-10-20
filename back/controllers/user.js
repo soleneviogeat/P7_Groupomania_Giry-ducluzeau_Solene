@@ -18,60 +18,15 @@ exports.signup = (req, res, next) => {
                 password: hash
             });
         
-            user.save((err, user) => {
-                if (err) {
-                  res.status(500).send({ message: err });
-                  return;
-                }
-                if (req.body.roles) {
-                  Role.find(
-                    {
-                      name: { $in: req.body.roles }
-                    },
-                    (err, roles) => {
-                      if (err) {
-                        res.status(500).send({ message: err });
-                        return;
-                      }
-                      user.roles = roles.map(role => role._id);
-                      user.save(err => {
-                        if (err) {
-                          res.status(500).send({ message: err });
-                          return;
-                        }
-                        res.send({ message: "User was registered successfully!" });
-                      });
-                    }
-                  );
-                } else {
-                  Role.findOne({ name: "user" }, (err, role) => {
-                    if (err) {
-                      res.status(500).send({ message: err });
-                      return;
-                    }
-                    user.roles = [role._id];
-                    user.save(err => {
-                      if (err) {
-                        res.status(500).send({ message: err });
-                        return;
-                      }
-                      res.send({ message: "User was registered successfully!" });
-                    });
-                  });
-                }
-              });
-        })
-
-            /*user.save()
+            user.save()
                 .then(() => {
                     res.status(201).json({ message: 'Utilisateur créé !' })
                 })
                 .catch(error => {
-                    console.log(error);
                     res.status(400).json({ error })
                 });
         })
-        .catch(error => res.status(500).json({ error: error }));*/
+        .catch(error => res.status(500).json({ error: error }));
 };
 
 exports.login = (req, res, next) => {
@@ -113,6 +68,18 @@ exports.getOneUser = (req, res, next) => {
     .catch(error => res.status(404).json({ error }));
 }
 
+exports.changeUserAdminRole = (req, res, next) => {
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      user.isAdmin = !user.isAdmin;
+      user.save()
+        .then(() => {
+            res.status(200).json({ message: 'Role admin: ' + user.isAdmin })
+        })
+    })
+    .catch(error => res.status(404).json({ error }));
+}
+
 exports.deleteUser = ((req, res, next) => {
   User.findOne({ _id: req.params.id })
   .then(user => 
@@ -134,12 +101,10 @@ function deleteAllPostOfUser(userId) {
       if (post.imageUrl) {
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
-          console.log('je veux supprimer ce post', post._id);
-          //Post.deleteOne({_id: post._id});
+          Post.deleteOne({_id: post._id});
         });
       } else {
-        console.log('je veux supprimer ce post', post._id)
-        //Post.deleteOne({_id: post._id});
+        Post.deleteOne({_id: post._id});
       }
     });
   });
@@ -152,12 +117,10 @@ function deleteAllComOfoUser(userId) {
         if (com.imageUrl) {
           const filename = com.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
-            console.log('je veux supprimer ce com', com._id)
-            //Com.deleteOne({_id: com._id});
+            Com.deleteOne({_id: com._id});
           });
         } else {
-          console.log('je veux supprimer ce com', com._id)
-          //Com.deleteOne({_id: com._id});
+          Com.deleteOne({_id: com._id});
         }
       });
     })

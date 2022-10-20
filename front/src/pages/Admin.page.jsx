@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Header from '../components/Header';
 import userService from '../services/user.service'
 
 function AdminPage() {
@@ -24,17 +25,13 @@ function AdminPage() {
     })
 
     function removeUser(id) {
-      console.log(id);
-      
         userService.deleteUser(id)
-        .then((res)=>console.log('oki doki', res))
-        .catch((err)=>console.log('mamamiha', err));
-        
     }
 
 
     return (
         <div>
+          <Header></Header>
             {loading && <div>Chargement de la page Administration...</div>}
             {error && (
               <div>{`Il y a un problème avec la récupération de la page - ${error}`}</div>
@@ -44,20 +41,22 @@ function AdminPage() {
                     <tr>
                         <th>Nom</th>
                         <th>Prénom</th>
-                        <th>email</th>
-                        <th>role</th>
+                        <th>Email</th>
+                        <th>Administrateur</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
               {userData &&
-                userData.map(({ _id, lastname, firstname, email, password, role }) => (
+                userData.map(({ _id, lastname, firstname, email, password, isAdmin }) => (
                   <tr key={_id}>
                     <td>{lastname}</td>
                     <td>{firstname}</td>
                     <td>{email}</td>
-                    <td>{role}</td>
-                    <td><button onClick={() => removeUser(_id)}>Supprimer</button></td>
+                    <td>{isAdmin ? 'Oui' : 'Non'}</td>
+                    <td>
+                      <button onClick={() => removeUser(_id)}>Supprimer</button>
+                    </td>
                   </tr>
                 ))} 
                 </tbody>

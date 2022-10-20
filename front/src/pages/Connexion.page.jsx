@@ -3,22 +3,27 @@ import colors from '../utils/colors'
 import { StyledLink } from '../utils/Atoms'
 import { useTheme } from '../utils/hooks'
 import { StyledTitle } from '../utils/Components'
-//import HomeIllustration from '../../assets/home-illustration.svg'
+import LightLogo from '../assets/light-logo.png'
+import RedLogo from '../assets/red-logo.png'
 
 
-// Design de la bannière de la page d'accueil
 const HomeWrapper = styled.div`
   display: flex;
   justify-content: center;
 `
 
 const HomeContainer = styled.div`
-  margin: 30px;
+  margin: 100px;
   background-color: ${({ theme }) =>
     theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
+  padding: 15px;
+`
+
+const HomeLogo = styled.img`
+  width: 22rem;
 `
 
 const LeftCol = styled.div`
@@ -44,9 +49,12 @@ function Home() {
   const { theme } = useTheme()
 
   return (
-    <HomeWrapper>
-      <HomeContainer theme={theme}>
+    <HomeWrapper className='HomeWrapper'>
+      <HomeContainer theme={theme} className='card'>
         <LeftCol>
+          <div className='flex center'>
+            <HomeLogo src={theme === 'light' ? RedLogo : LightLogo} />
+          </div>
           <StyledTitle theme={theme}>
             Bienvenue sur le réseau social de communication et d'échange de Groupomania 
           </StyledTitle>
@@ -58,14 +66,10 @@ function Home() {
               S'inscrire
             </StyledLink>
           </StyledFlexContainer>
-          
         </LeftCol>
-        
       </HomeContainer>
     </HomeWrapper>    
   )
 }
 
 export default Home
-
-/*<Illustration src={HomeIllustration} /> */

@@ -6,8 +6,10 @@ li {
     list-style: none;
 }
 
-
 .likeButton {
+    border: none;
+    background-color: #F9F9FC;
+    font-size: 25px;
     color: green;
     &:disabled {
         opacity: 0.2;
@@ -15,19 +17,69 @@ li {
 }
 
 .dislikeButton {
+    border: none;
+    background-color: #F9F9FC;
+    font-size: 25px;
     color: red;
+    margin-left: 10px;
     &:disabled {
        opacity: 0.2;
     }
 }
 
-
 .creationPost {
-    padding: 5rem;
-    background-color: lightblue;
+    margin-bottom: 1em;
+    padding: 2rem;
+    background-color: #F9F9FC;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+.formCreationPost {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.buttonCreationPost {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.inputFileCreationPost {
+    height: 80px;
+}
+
+.buttonUser {
+    margin-right: 10px;
+    border-radius: 1rem;
+    color: white;
+    background-color: #4E5166;
+    font-size: 15px;
+}
+
+.commentSection {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #4E5166;
+    color: white;
+    font-size: 20px;
+    border-radius: 1rem;
+    .commentDetails {
+        font-size: 16px;
+    }
+}
+
+.titleCom {
+    color: #4E5166;
+}
+
+.postSection {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
 
 .card {
     display: flex;
@@ -58,7 +110,50 @@ li {
     &.flex-1 {
         flex: 1;
     } 
+    &.start {
+        justify-content: flex-start;
+    }
+    &.end {
+        align-items: flex-end;
+    }
 }
+
+.padding-1 {
+    padding: 1em;
+}
+
+.padding-2 {
+    padding: 2em;
+}
+
+.infosPost {
+    display: flex;
+}
+
+.margin-page {
+    margin-left: 15em;
+    margin-right: 15em;
+}
+
+
+
+.margin-comment {
+    margin: 20px 100px;
+}
+
+
+.commentCreatSection {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+    .commentOpen {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 2em;
+    }
+}
+
 
 table {
     border-collapse: collapse;
@@ -73,11 +168,16 @@ table {
     width: 100%;
 }
 
+.w-50 {
+    width: 50%;
+}
+
 .form-group {
     padding: 1rem;
     width: 80%;
     & > .form-text,
     .form-input {
+        background-color: #FFD7D7;
         white-space: nowrap;
         display: block;
         &:not(:first-child):not(:last-child) {
@@ -87,8 +187,7 @@ table {
             border-radius: 6px 0 0 6px;
             padding: 8px 12px;
             line-height: 25px;
-            color: #99A3BA;
-            background: #EEF4FF;
+            background-color: #FFD7D7;
             border: 1px solid #CDD9ED;
             transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
             width: 30%;
@@ -96,9 +195,6 @@ table {
         &:last-child {
             border-radius: 0 6px 6px 0;
             width: 70%;
-        }
-        &:not(:first-child) {
-            margin-left: -1px;
         }
     }
     
@@ -108,3 +204,97 @@ table {
 p {
     padding: 0.1em;
 }
+
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+    body {
+        margin: 0.5em !important;
+    }
+
+    .commentCreatSection {
+        padding: 0;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .margin-page {
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+
+    .margin-comment {
+        margin: 0.5em;
+    }
+
+    .infosPost {
+        flex-direction: column;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        & > .form-text,
+        .form-input {
+            background-color: #FFD7D7;
+            white-space: nowrap;
+            
+            &:not(:first-child):not(:last-child) {
+                border-radius: 0;
+            }
+            &:first-child {
+                border-radius: 6px 6px 0 0;
+                padding: 8px 12px;
+                width: 100% ;
+            }
+            &:last-child {
+                border-radius: 0 0 6px 6px;
+                padding: 8px 12px;
+                background-color: #ffd7d7bb;
+                width: 100%;
+            }
+            &:not(:first-child) {
+                margin-left: -1px;
+            }
+        }
+        
+    }
+
+    .postSection {
+        flex-direction: column;
+    }
+
+    .buttonCreationPost {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+  }
+
+  @media screen and (max-width: 1124px) and (min-width: 769px) {
+    .margin-page {
+        margin-left: 10em;
+        margin-right: 10em;
+    }
+
+    .margin-comment {
+        margin: 0.5em;
+    }
+
+    .infosPost {
+        flex-direction: column;
+    }
+  }

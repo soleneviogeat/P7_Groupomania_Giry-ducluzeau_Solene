@@ -6,7 +6,6 @@ import Login from './pages/Login.page'
 import Signup from './pages/Signup.page'
 import Post from './pages/Post.page'
 import Admin from './pages/Admin.page'
-import Header from './components/Header'
 import Footer from './components/Footer'
 import GlobalStyle from './utils/GlobalStyle'
 import { ThemeProvider } from './utils/ColorContext'
@@ -23,7 +22,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
       <ThemeProvider>
           <GlobalStyle />
-          <Header />
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/login" element={<Login/>} />

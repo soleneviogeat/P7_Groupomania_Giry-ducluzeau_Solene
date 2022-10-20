@@ -27,11 +27,12 @@ text-align: center;
 
 export const StyledTitle = styled.h2`
   display: flex;
+  padding-top: 30px;
   padding-bottom: 30px;
   width: 100%;
   text-align: center;
-  font-size: 26px;
-  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
+  font-size: 23px;
+  color: ${({ theme }) => (theme === 'light' ? colors.tertiaire : '#ffffff')};
 `
 export const InputWrapper = styled.div`
   color: ${({ theme }) => (theme === 'light' ? colors.dark : 'white')};

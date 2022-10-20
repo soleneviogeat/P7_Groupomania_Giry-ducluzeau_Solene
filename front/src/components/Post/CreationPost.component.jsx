@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import axios from 'axios';
 import postService from '../../services/post.service';
+import { StyledButton } from '../../utils/Atoms'
 
 function CreationPost({createPost}) {
-
   const [file, setFile] = useState()
   const [postCreate, setPostCreate] = useState({
     post: "",
@@ -19,28 +18,27 @@ function CreationPost({createPost}) {
     formData.append('text', postCreate.text)
 
     postService.createPostFile(formData)
-    .then((res)=>console.log('ouiii', res))
-    .catch((err)=>console.log('nooon', err));
-
-    createPost(true);
+    .then((res)=>createPost(true))
   }
 
   return (
-    <div className="creationPost">
-        <form onSubmit={handleSubmit}>
-          <h1>Créer un post</h1>
-            <input
-            type="text"
-            name="text"
-            id="post"
-            placeholder='écrire un post'
-            value={postCreate.text}
-            onChange={(e) => setPostCreate({
-                ...postCreate,
-                text: e.target.value
-            })}/>
-          <input type="file" name='image' onChange={handleChange}/>
-          <button type="submit">Créer</button>
+    <div className="creationPost margin-page">
+        <form onSubmit={handleSubmit} className="formCreationPost">
+          <h1>Exprimez-vous...</h1>
+          <input className='inputFileCreationPost'
+          type="text"
+          name="text"
+          id="post"
+          placeholder='Ajouter un texte'
+          value={postCreate.text}
+          onChange={(e) => setPostCreate({
+              ...postCreate,
+              text: e.target.value
+          })}/>
+          <div className='buttonCreationPost'>
+            <input type="file" onChange={handleChange}/>
+            <StyledButton type="submit">Publier</StyledButton>
+          </div>
         </form>
     </div>
   );

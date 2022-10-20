@@ -25,7 +25,6 @@ class ComService {
           };
         return axios.post(url, formData, config).then((response) => {
             console.log(response.data);
-            //const filename = response.data.file.filename;
           });
     }
 
