@@ -1,7 +1,7 @@
 const colors = {
-    primary: '#FD2D01',
-    secondary: '#FFD7D7',
-    tertiaire: '#4E5166',
+    primary: '#E9DACA',
+    secondary: '#FCF8ED',
+    tertiaire: '#6733CF',
     backgroundLight: '#F9F9FC',
     backgroundDark: '#4F4C6B',
     dark: '#2F2E41',
@@ -16,7 +16,6 @@ const colors = {
     groupColorFocus: '#fff',
     groupBorderFocus: '#275EFE',
     groupBackgroundFocus: '#678EFE',
-    
   }
   
   export default colors

@@ -1,0 +1,203 @@
+
+  /* Responsive */
+
+
+  @media all and (max-device-width: 480px) {
+    section {
+        margin-right: 30px;
+    }
+    div.evenement {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    div.img-evenement, div.text-evenement, 
+    div.btn-evenement, div.lien-evenement  {
+        flex: 100%;
+        -ms-flex: 100%;
+        max-width: 100%;
+        width: auto;
+    }
+    div.img-evenement:nth-child(2n) {
+        display: none;
+    }
+} 
+
+/* Organisation d'un événement privé - Events.page.jsx */
+
+section {
+    margin-top: 160px;
+}
+
+h4 {
+    text-align: center;
+    font-size: 60px;
+    color: #6733CF;
+    margin-bottom: 20px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 28px;
+    /* text-transform: uppercase; */
+    margin-top: 0px;
+}
+
+.evenement {
+    display: flex;
+    flex-direction: row;
+    margin-top: 80px;
+    padding-left: 70px;
+}
+
+/* Mise en page des images */
+
+.img-evenement {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    margin-right: 40px;
+}
+
+.img-evenement img {
+margin-bottom: 20px;
+}
+
+/* Mise en page du texte */
+
+.text-evenement {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 65%;
+}
+
+.text-evenement p {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 0;
+}
+
+
+/* Mise en page bouton */
+
+
+.btn-evenement {
+    text-align: center;
+    width: 40%;
+    position: relative;
+    margin: 50px;
+    padding: 15px 30px;
+}
+
+.btn-evenement a {
+    color: black;
+    font-family: 'Clicker Script';
+    font-size: 40px;
+}
+  
+.btn-evenement:before {
+    content : "";
+    position: absolute;
+    top    : 0;
+    right  : 0;
+    height  : 50%;
+    width   : 50%;  /* or 100px */
+    transition: 800ms ease-in-out;
+    border-top: 2px solid #6733CF;
+    border-right: 2px solid #6733CF;
+}
+
+.btn-evenement:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 50%;
+    width: 50%;  /* or 100px */
+    transition: 800ms ease-in-out;
+    border-bottom: 2px solid #6733CF;
+    border-left: 2px solid #6733CF;
+}
+   
+.btn-evenement:hover:after {
+    cursor: pointer;
+    transition: 800ms ease-in-out;
+    height: 100%;
+    width: 100%;
+}
+
+.btn-evenement:hover::before {
+    cursor: pointer;
+    transition: 800ms ease-in-out;
+    height: 100%;
+    width: 100%;
+}
+
+
+/* Mise en page lien événements privés */
+
+
+.lien-evenement ul {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    margin-bottom: 50px;
+    font-size: 23px;
+}
+
+.lien-evenement li {
+    margin-bottom: 100px;
+    color: black;
+    font-weight: bold;
+    width: 100%;
+}
+
+
+/* Organisation d'un déjeuné privé - brunch.html */
+
+@media all and (max-device-width: 480px) { 
+    div.detail-evenement p, div.list-evenement,
+    div.envies-evenement {
+        flex: 100%;
+        -ms-flex: 100%;
+        max-width: 100%;
+        width: auto;
+    }
+    div.img-evenement:nth-child(2n) {
+        display: none;
+    }
+} 
+
+.detail-evenement {
+    width: 100%;
+}
+
+.detail-evenement p {
+    display: flex;
+    align-items: flex-start; 
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.list-evenement{
+    display: flex;
+    flex-flow: wrap column;
+    align-items: flex-start;    
+}
+
+.list-evenement p {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.envies-evenement {
+    display: flex;
+    justify-content: center;
+    color: black;
+    font-family: 'Clicker Script';
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 50px;
+}

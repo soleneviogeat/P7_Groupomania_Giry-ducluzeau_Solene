@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Home from './pages/Connexion.page'
-import Login from './pages/Login.page'
-import Signup from './pages/Signup.page'
-import Post from './pages/Post.page'
+import Home from './pages/Home.page'
+import Presentation from './pages/Presentation.page'
+import Services from './pages/Services.page'
+import Pictures from './pages/Pictures.page'
+import Contact from './pages/Contact.page'
+import Events from './pages/Events.page'
+import Brunch from './pages/Brunch.page'
 import Admin from './pages/Admin.page'
 import Footer from './components/Footer'
 import GlobalStyle from './utils/GlobalStyle'
@@ -24,9 +27,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <GlobalStyle />
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/signup" element={<Signup/>} />
-            <Route path="/post" element={<Post/>}/>
+            <Route path="/presentation" element={<Presentation/>} />
+            <Route path="/services" element={<Services/>} />
+            <Route path="/pictures" element={<Pictures/>} />
+            <Route path="/contact" element={<Contact/>} />
+            <Route path="/events" element={<Events/>} />
+            <Route path="/brunch" element={<Brunch/>} />
             <Route path="/admin" element={<Admin/>}/>
           </Routes>
           <Footer></Footer>

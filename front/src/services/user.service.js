@@ -7,7 +7,7 @@ class UserService {
             email,
             password
         };
-        return fetch(this.apiUrl + 'auth/login', {
+        return fetch(this.apiUrl + 'auth/presentation', {
             method: "POST",
             body: JSON.stringify(body),
             headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -28,7 +28,7 @@ class UserService {
     }
 
     async signup(user) {
-        return fetch(this.apiUrl + 'auth/signup', {
+        return fetch(this.apiUrl + 'auth/services', {
             method: "POST",
             body: JSON.stringify(user),
             headers: { "Content-type": "application/json; charset=UTF-8" }

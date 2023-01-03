@@ -1,0 +1,247 @@
+/* Contact */
+
+/* Responsive */
+
+
+@media screen and (max-width: 985px) {
+    .titre-contact {
+    flex: 100%;
+    -ms-flex: 100%;
+    max-width: 100%;
+    width: 96%;
+    }
+} 
+
+
+@media screen and (max-width: 480px) {
+    .text-contact, .titre-contact {
+    flex: 100%;
+    -ms-flex: 100%;
+    max-width: 100%;
+    width: auto;
+    }
+} 
+
+
+/* Paramètres généraux de la page */
+
+
+section {
+    margin-top: 160px;
+}
+
+.text-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 24px;
+}
+
+.text-contact div {
+    padding: 0px 30px;
+}
+
+.text-contact a {
+    color: #6733CF;
+    font-weight: bolder;
+}
+
+.titre-contact {
+    font-weight: bolder;
+    font-size: 50px;
+}
+
+
+form {  
+    background: linear-gradient(70deg, #6733CF, #dee4ff);
+    background: url(../assets/wetransfer_img_1210-jpg_2022-01-13_0808/photo-form-contact.jpg) center;
+    background-size: cover;
+    background-attachment: fixed;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px  , inset 0 0 0 2000px rgba(0, 0, 0, 0.690);
+    height: auto; 
+}
+
+
+#formulaire {   
+    height: 650px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#formulaire form
+{   width: 65%;
+    font-size: 18px;
+}
+
+/* Première partie formulaire : informations de contact */
+
+
+.contact-info {
+    border: none;
+    margin: 60px 0px 40px 0px;
+    display: flex;
+    justify-content: space-around;
+    color: black;
+}
+
+.contact-info input {
+    width: 25%;
+    height: 30px;
+    border: 2px black solid;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+/* Deuxième partie formulaire : informations sur l'événement */
+
+.colum-form {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 0px;
+    padding-right: 0px;
+    border: none;
+}
+
+.contact-evt-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    letter-spacing: 3px;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+}
+
+.bouton_radio {
+    display: flex;
+    margin-top: 25px;
+    color: white;
+    font-weight: bold;
+    height: 25px;
+}
+
+.contact-evt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-weight: bold;
+    width: 100%;
+}
+
+.contact-evt input {
+    width: 75%;
+    height: 30px;
+    border: 2px black solid;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+
+.date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    letter-spacing: 3px;
+    width: 60%;
+}
+
+.date input {
+    margin-top: 10px;
+}
+
+textarea {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 70%;
+    height: 190px;
+    border: 2px black solid;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 50px;
+}
+
+::placeholder {
+    color: black;
+    font-family: 'Playfair Display', sherif;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+
+/* Troisième partie : bouton "Envoyer" */
+
+.container {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 130px;
+  }
+  
+  .center {
+    width: 180px;
+    height: 60px;
+    position: absolute;
+    border-radius: 20px;
+  }
+  
+  .btn {
+    width: 180px;
+    height: 60px;
+    font-weight: bold;
+    font-family: 'Playfair Display', sherif;
+    letter-spacing: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid white;
+    background-color: white;
+    color: #6733CF;
+    outline: none;
+    transition: 1s ease-in-out;
+    border-radius: 20px;
+  }
+  
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    fill: none;
+    stroke: #fff;
+    stroke-dasharray: 150 480;
+    stroke-dashoffset: 150;
+    transition: 1s ease-in-out;
+    border-radius: 20px;
+  }
+  
+  .btn:hover {
+    transition: 1s ease-in-out;
+    background-color: #6733CF;
+    color: white;
+  }
+  
+  .btn:hover svg {
+    stroke-dashoffset: -480;
+  }
+  
+  .btn span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+
+
+

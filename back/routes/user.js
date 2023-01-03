@@ -7,8 +7,10 @@ const verifySignUp = require("../middleware/verifySignUp")
 
 //Routes pour la connexion et l'inscription des utilisateurs
 
-router.post('/signup', passwordCheck, userCtrl.signup);
-router.post('/login', userCtrl.login);
+router.post('/services', passwordCheck, userCtrl.services);
+router.post('/presentation', userCtrl.presentation);
+router.post('/pictures', userCtrl.pictures);
+router.post('/contact', userCtrl.contact);
 router.get('/users', userCtrl.getAllUsers);
 router.get('/users/:id', auth, userCtrl.getOneUser);
 router.delete('/:id', auth, userCtrl.deleteUser);

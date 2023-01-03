@@ -1,0 +1,419 @@
+/* Typographies */
+
+@font-face {
+    font-family: 'Vidaloka';
+    src: url(https://fonts.gstatic.com/s/vidaloka/v13/7cHrv4c3ipenMKlEavs7wH8.woff2) format('woff2');
+} 
+
+
+@font-face {
+    font-family: 'Playfair Display';
+    src: url(https://fonts.gstatic.com/s/playfairdisplay/v25/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtM.woff2) format('woff2');
+}
+
+
+@font-face {
+    font-family: 'Clicker Script';
+    src: url(https://fonts.gstatic.com/s/clickerscript/v11/raxkHiKPvt8CMH6ZWP8PdlEq71rf0Ts.woff2) format('woff2');
+}
+
+
+/* Eléments principaux de la page */
+
+html {
+    background-color: #DEE4FF /* rgb(252, 248, 237) */;
+}
+
+body {   
+    margin: auto;
+    font-family: 'Playfair Display', sherif;
+}
+
+h1 {  
+    font-size: 55px;
+    text-align: center;
+    color: #E9DACA/* #6733CF */;
+    text-shadow: 1px 1px 2px black, 0 0 1em white, 0 0 0.2em white;
+    font-family: 'Vidaloka', serif;
+}
+
+.souligne {
+    text-decoration: underline black 6px; 
+    text-underline-position: under;
+}
+
+
+.box_rectangular {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    margin: 60px 60px 60px 60px;   
+    border: 1px solid #bbbbbb;
+    border-radius: 15px;
+}
+
+
+/* Header */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FCF8ED/* #dee4ff */;
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 100000;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 22px 70px 4px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 15%;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+}
+
+
+/* Navigation */
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+nav li {
+    width : 15%;
+    margin-right: 20px;
+}
+
+nav a {
+    font-size: 1.3em;
+    color: #181818;
+    padding-bottom: 3px;
+    text-decoration: none;
+    font-family: 'Playfair Display';
+}
+
+nav a:hover {
+    color: #ffffff;
+}
+
+nav a.active {
+    background-color: #6733CF;
+    color: #ffffff;
+}
+
+nav {
+    width: 85%;
+}
+
+#titre_principal {
+    width: 15%;
+}
+
+.bouton_menu {   
+    display: block;
+    line-height: 40px;
+    background-color: white;
+    color: #6733CF;
+    -webkit-transition: all 0.7s ease-out 0s;
+    -moz-transition: all 0.7s ease-out 0s;
+    transition: all 0.7s ease-out 0s;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border-radius: 5%;
+    font-size: 1.3em;
+    padding-bottom: 3px;
+    text-decoration: none;
+}
+
+.bouton_menu:hover { 
+    background-color: #6733CF;
+    color: #ffffff;
+}
+
+
+/* Bannière */
+
+#banniere_image { 
+    margin-top: 100px;
+    height: 500px;
+    width: 100%;
+    background: url(../assets/photo-page-accueil.jpg) no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.432);
+}
+
+#banniere_image img { 
+    width: 20%;
+    margin-left: 350px;
+    padding-top: 0px;
+}
+
+figure {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    height: 250px;
+}
+
+figcaption {
+    margin-left: 300px;
+    color: #6733CF;
+    font-size: 40px;
+    text-shadow: 1px 1px 2px black, 0 0 1em white, 0 0 0.2em white;
+    font-family: 'Vidaloka', serif;
+}
+
+
+/* Presentation */
+
+#presentation {   
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #E9DACA;
+    margin: 0;
+}
+
+.detail_presentation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #595959;
+    font-size: 0.9em;
+    justify-content: space-between;
+    margin: 0px 20px;
+}
+
+#presentation img {   
+    width: 35%;
+    height: 35%;
+    padding-right: 20px;
+}
+
+h5 {
+    text-transform: uppercase;
+    font-weight: bolder;
+    font-size: 33px;
+}
+
+#presentation aside {   
+    width: 65%;
+    font-size: 27px;
+    text-align: center;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #E9DACA;
+}
+
+aside a {
+    color: #595959;
+}
+
+
+/* Services */
+
+.gg {
+    margin-top: 80px;
+}
+
+/* #services {   
+    padding: 30px 0 60px 0;
+    background: url(../assets/wetransfer_img_1210-jpg_2022-01-13_0808/DSC_2524.jpg) no-repeat center center;
+    background-size: cover;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px, inset 0 0 0 2000px rgba(0, 0, 0, 0.232) ;
+}
+
+#details {   
+    display: flex;
+    justify-content: space-around;
+}
+  
+.offres {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 26px;  
+    padding: 3%;
+    border-radius: 500px;
+    height: 250px;
+    width: 250px;
+    background-color: white;
+    border: 1.2px solid #6733CF;
+    text-decoration: none;
+    color: #6733CF;
+}
+
+
+/* Gallerie photos */
+
+.pictures {
+    background-color: #E9DACA;
+    padding: 10px 10px ;
+    margin-bottom: 10px;
+}
+
+
+/* Contact */
+
+.contact {
+    margin-top: 0px;
+}
+
+
+/* Footer */
+
+    /* Eléments généraux footer */
+
+footer {   
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    background-color:/*#FFECC7*/#6733CF;
+    color: white;
+    font-weight: bold;
+}
+
+.link {         /* mise en page div */                 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+}
+
+.link a {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: white;
+}
+
+h2  {
+    font-size: 19px;
+    text-decoration: underline;
+    margin-bottom: 0%;
+}
+
+    /* A propos de nous */
+
+
+.link p {
+    text-align: center;
+}
+
+.about-us-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-footer {   
+    text-decoration: none;
+    border: 1px solid;
+    border-radius: 43px;
+    font-size: 15px;
+    padding: 7px 30px;
+    margin: 5px;
+}
+
+.btn-footer:hover {
+   text-decoration: none;
+}
+
+::placeholder {
+    font-size: 10px;
+    padding-left: 10px;
+    font-style: italic;
+}
+
+    /* Aide */
+
+
+footer ul li {
+    list-style: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
+footer ul  {
+    display: flex;
+    flex-direction: column;
+}
+
+footer ul li a{
+    text-decoration: none;
+}
+
+
+    /* Newsletter */
+
+
+.social {
+    margin-top: 5px;
+}
+
+.social .fa {
+    font-size: 22px;
+    text-decoration: none;
+}
+
+
+.icon {
+    font-size: xx-large;
+    padding-right: 5px;
+}
+
+
+/* Page Accueil/Galerie Photos/Contact - mise en forme du bouton SUIVEZ NOUS SUR INSTA */
+
+
+aside {
+    margin-top: 70px;
+    padding: 50px 0px
+}
+
+.insta {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.insta a {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: #6733CF;
+    font-size: 25px;
+    border: solid #6733CF 2px;
+    padding: 0px 30px;
+    border-radius: 60px;
+}
+
+.lg-insta {
+    font-size: 65px;
+    padding-right: 30px;
+    color: #6733CF;
+}
+
+.insta a:hover {
+    transform: scale(1.12);
+    cursor: pointer;
+    transition: transform 0.4s;
+}
+
+
+
+
+
